@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <title>Галерея</title>
+</head>
+<body>
+
+<header>
+    <section>
+        <div class="container-xxl">
+            <div class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                    <span class="fs-4">Лэмпворк</span>
+                </a>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a href="/index" class="nav-link px-2 link-dark">Home</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Галерея</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</header>
+
+<section>
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col-3">
+                <form th:action="@{/gallery/filter}" method="POST">
+                    <p>Фильтр</p>
+                    <a style="font-weight: bold">Категория</a>
+
+                    <div th:each="type, iterStat : ${types}">
+                        <div class="form-check">
+                            <label class="form-check-label" for="checkType"><span
+                                    th:utext="${type.name}"></span></label>
+                            <input class="form-check-input" type="checkbox" name=checkedTypesList th:value="${type.id}"
+                                   id="checkType"
+                                   th:checked="${#lists.isEmpty(typesCustom)} ? true : (${#lists.contains(typesCustom, type.id)}? true : false)">
+                        </div>
+                    </div>
+
+                    <br>
+                    <a style="font-weight: bold">Товар</a>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" role="switch" id="availableChecked"
+                               name="availableProducts" th:checked="${availableProd}">
+                        <label class="form-check-label" for="availableChecked">В наличии</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" role="switch" id="saleChecked"
+                               name="saleProducts" th:checked="${saleProd}?: true">
+                        <label class="form-check-label" for="saleChecked">Со скидкой</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" role="switch" id="newChecked" name="newProducts"
+                               th:checked="${newProd}?: true">
+                        <label class="form-check-label" for="newChecked">Новый</label>
+                    </div>
+
+                    <br>
+                    <a style="font-weight: bold;">Цена <span id="rangeValue" style="font-weight: normal;"></span></a>
+                    <div class="col-9 mt-2">
+                        <div class="row row-cols-3 mb-2">
+                            <div class="col"><span class="border border-2 p-1 rounded" th:utext="${minPrice}"></span></div>
+                            <div class="col text-center"><span>-</span></div>
+                            <div class="col text-end"><span class="border border-2 p-1 rounded" th:utext="${maxPrice}"></span></div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="range" class="form-range table-secondary"
+                                   th:step="1" th:min="${minPrice}" th:max="${maxPrice}" list="rangeList"
+                                   onchange="document.getElementById('rangeValue').innerHTML = this.value;"
+                                   name="priceRangeProducts" th:value="${priceProd}?: ${maxPrice}">
+                            <datalist id="rangeList">
+                                <option th:value="${minPrice}" th:text="${minPrice}">
+                                <option th:value="${maxPrice}" th:text="${maxPrice}">
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-sm btn-primary" type="submit">Обновить</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="col-9">
+                <p>Коллекция</p>
+                <div class="products_list" th:each="element : ${map}">
+                    <div class="row flex-wrap text-start justify-content-center py-1 text-uppercase text-decoration-underline fw-bold">
+                        <p th:text="${element.key.name}"></p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-3" th:each="product : ${element.value}">
+                            <div class="card border-0" style="max-width: 20rem;">
+
+                                <div class="card-body">
+                                    <div class="position-relative">
+                                        <img class="card-img-top border-bottom border-secondary border-2"
+                                             th:src="@{'/fotos/' + ${product.image}}" alt="image">
+
+                                        <!--                                <p>Status: <span th:utext="${product.state}?: '(no state specified)'"></span></p>-->
+
+                                        <span class="position-absolute top-0 start-100 translate-middle p-2 badge text-bg-danger rounded-pill"
+                                              th:if="${product.state.equals(product.state.NEW)}">NEW<span
+                                                class="visually-hidden">метка - товар NEW</span></span>
+
+                                        <span class="position-absolute top-0 start-100 translate-middle p-2 badge text-bg-warning rounded-pill"
+                                              th:if="${product.state.equals(product.state.SALE)}">SALE<span
+                                                class="visually-hidden">метка - товар SALE</span></span>
+
+                                        <span class="position-absolute top-0 start-100 translate-middle p-2 badge text-bg-success rounded-pill"
+                                              th:if="${product.state.equals(product.state.SOLD)}">SOLD<span
+                                                class="visually-hidden">метка - товар SOLD</span></span>
+                                    </div>
+
+                                    <h5 class="card-title"><span th:text="${product.name}"></span></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted text-end">&#8381;<span
+                                            th:text="${product.price}"></span><br>
+                                        <span class="product_old_price"
+                                              th:unless="${product.oldPrice} == 0">&#8381;<span
+                                                th:text="${product.oldPrice}"></span></span></h6>
+                                    <a class="stretched-link card-link" th:href="@{'/products/'+ ${product.id}}"><span
+                                            class="sr-only"></span></a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <section>
+        <div class="container-xxl ">
+            <div class="d-flex bg-light flex-wrap justify-content-center mb-3">
+                <div class="col-md-10">
+                    <p>© 2022 Your company. All rights reserved.</p>
+                </div>
+
+                <div class="col-md-2 social">
+                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-telegram" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-facebook fa-1x" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>
+
+<script defer src="/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="js/bootstrap.bundle.min.js" ></script> -->
+</body>
+</html>

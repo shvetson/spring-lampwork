@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <title>Админ. Новая группа</title>
+</head>
+<body>
+<section>
+    <div class="container-xxl">
+        <header class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+                <span class="fs-4">Администрирование</span>
+            </a>
+
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="/index" class="nav-link px-2">Home</a></li>
+                <li class="nav-item"><a href="/products" class="nav-link px-2">Продукты</a></li>
+                <li class="nav-item"><a href="/admin/types" class="nav-link px-2">Группы</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary"><span th:text="${productType.name}"></span></a></li>
+            </ul>
+        </header>
+    </div>
+</section>
+
+<section>
+    <div class="container-xxl">
+        <h2>Новая группа товара</h2>
+
+        <form th:action="@{/admin/types/add}" th:object="${productType}" method="POST">
+            <input type="text" th:field="*{id}" hidden/>
+            <div class="row mb-3">
+                    <label for="productTypeName" class="col-2 col-form-label">Наименование группы</label>
+                    <div class="col-4">
+                        <input type="text" class="form-control" id="productTypeName" th:field="*{name}" required>
+                    </div>
+
+            </div>
+            <div class="row mb-3">
+                <label for="productTypeOrderId" class="col-2 col-form-label">Приоритет</label>
+                <div class="col-4">
+                    <input type="text" class="form-control" id="productTypeOrderId" th:field="*{orderId}" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+        </form>
+
+    </div>
+</section>
+
+</body>
+
+<script defer src="/js/bootstrap.bundle.min.js"></script>
+</html>

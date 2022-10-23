@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <title>Украшение</title>
+</head>
+<body>
+
+<header>
+    <section>
+        <div class="container-xxl">
+            <div class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                    <span class="fs-4">Лэмпворк</span>
+                </a>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a href="/index" class="nav-link px-2 link-dark">Home</a></li>
+                    <li class="nav-item"><a href="/gallery" class="nav-link px-2 link-dark">Галерея</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Украшение</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</header>
+
+<section>
+    <div class="container-xxl">
+        <div th:object="${product}">
+            <div class="card my-5 border-0">
+                <div class="row g-0 mb-3">
+                    <div class="col-md-6">
+                        <img th:src="@{'/fotos/' + ${product.image}}" class="img-fluid rounded-start" alt="Photo">
+
+                        <span class="position-absolute top-0 start-100 translate-middle p-2 badge text-bg-danger rounded-pill"
+                              th:if="${product.state.equals(product.state.NEW)}">NEW<span
+                                class="visually-hidden">метка - товар NEW</span></span>
+
+                        <span class="position-absolute top-0 start-100 translate-middle p-2 badge text-bg-warning rounded-pill"
+                              th:if="${product.state.equals(product.state.SALE)}">SALE<span
+                                class="visually-hidden">метка - товар SALE</span></span>
+
+                        <span class="position-absolute top-0 start-100 translate-middle p-2 badge text-bg-success rounded-pill"
+                              th:if="${product.state.equals(product.state.SOLD)}">SOLD<span
+                                class="visually-hidden">метка - товар SOLD</span></span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body px-5">
+                            <p class="card-text fw-bold" style="font-size: 30px;" th:text="${product.name}"></p>
+
+                            <ul class="list-inline mb-2 mb-sm-0">
+                                <li class="list-inline-item h4 fw-light mb-0">&#8381;<span
+                                        th:text="${product.price}"></span></li>
+                                <li class="list-inline-item text-muted fw-light">
+                                    <del><span th:unless="${product.oldPrice} == 0">&#8381;<span
+                                            th:text="${product.oldPrice}"></span></span></del>
+                                </li>
+                            </ul>
+
+                            <p class="card-text fst-italic text-muted mt-3" style="font-size: 20px;"
+                               th:text="${product.description}"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="list-unstyled mt-3">
+                    <li><strong>Категория: </strong><a class="text-muted text-decoration-none" href="#" th:text="${product.productType}"></a></li>
+                    <li><strong>Лот: </strong><a class="text-muted text-decoration-none" href="#" th:text="${product.id}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <section>
+        <div class="container-xxl ">
+            <div class="d-flex bg-light flex-wrap justify-content-center mb-3 mt-5">
+                <div class="col-md-10">
+                    <p>© 2022 Your company. All rights reserved.</p>
+                </div>
+
+                <div class="col-md-2 social">
+                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-telegram" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-facebook fa-1x" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>
+
+<script defer src="/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="js/bootstrap.bundle.min.js" ></script> -->
+</body>
+</html>

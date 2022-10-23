@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <title>Админ. Список товаров</title>
+</head>
+<body>
+
+<section>
+    <div class="container-xxl">
+        <header class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+                <span class="fs-4">Администрирование</span>
+            </a>
+
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="/index" class="nav-link px-2">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Продукты</a></li>
+                <li class="nav-item"><a href="/admin/types" class="nav-link px-2">Группы</a></li>
+            </ul>
+        </header>
+    </div>
+</section>
+
+<section>
+    <div class="container-xxl">
+        <h2>Управление товарами</h2>
+
+        <table class="table-responsive table-secondary table-bordered table-striped caption-top">
+            <caption>Список товаров</caption>
+            <thead style="text-align: center;">
+            <th scope="col" style="padding-left: 10px; padding-right: 10px;">#</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Название товара</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Группа</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Старая цена</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Текущая цена</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Статус</th>
+<!--            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">HOT</th>-->
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Создан</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Продан</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px">Имя файла</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px">Действия</th>
+            </thead>
+            <tbody>
+            <div th:each="product, iterStat : ${products}">
+                <tr style="text-align: center">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${product.name}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
+                    <td th:text="${product.productType}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
+                    <td th:text="${product.oldPrice}" style="text-align: center; padding-left: 10px; padding-right: 10px;"></td>
+                    <td th:text="${product.price}" style="text-align: center; padding-left: 10px; padding-right: 10px;"></td>
+                    <td th:text="${product.state}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
+<!--                    <td th:text="${product.hotProduct}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>-->
+                    <td th:text="${product.created}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
+                    <td th:text="${product.sold}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
+                    <td th:text="${product.image}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
+<!--                    <td><a th:href="@{'/products/edit/' + ${product.id}}"-->
+<!--                           class="btn btn-sm btn-secondary">Редактировать</a></td>-->
+<!--                    <td><a th:href="@{'/products/delete/' + ${product.id}}" class="btn btn-sm btn-secondary">Удалить</a>-->
+<!--                    </td>-->
+                    <td>
+                        <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" th:href="@{'/admin/products/edit/' + ${product.id}}"><i class="bx bx-edit-alt me-1"></i>Edit</a>
+                                <a class="dropdown-item" th:href="@{'/admin/products/delete/' + ${product.id}}"><i class="bx bx-trash me-1"></i>Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </div>
+            </tbody>
+            <tfoot>
+            <td colspan="11"><a th:href="@{/admin/products/add}" class="btn btn-sm btn-primary">Добавить</a></td>
+            </tfoot>
+        </table>
+    </div>
+</section>
+
+</body>
+
+<script defer src="/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="js/bootstrap.bundle.min.js" ></script> -->
+</html>
