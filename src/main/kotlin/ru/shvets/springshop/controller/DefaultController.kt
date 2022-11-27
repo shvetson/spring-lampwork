@@ -6,6 +6,7 @@ import org.springframework.ui.set
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import ru.shvets.springshop.entity.Product
 import ru.shvets.springshop.entity.ProductType
@@ -19,6 +20,7 @@ import ru.shvets.springshop.service.ProductTypeService
  */
 
 @Controller
+//@RequestMapping("/api/v1")
 class DefaultController(
     private val productTypeService: ProductTypeService,
     private val productService: ProductService
