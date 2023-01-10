@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.ResponseStatus
 import ru.shvets.springshop.dto.ProductDto
 import ru.shvets.springshop.controller.DefaultController
+import ru.shvets.springshop.dto.ProductDto.Companion.toDto
 import ru.shvets.springshop.entity.Product
 import ru.shvets.springshop.entity.ProductState
 import ru.shvets.springshop.entity.ProductType
 import ru.shvets.springshop.repository.ProductRepository
 import ru.shvets.springshop.repository.ProductTypeRepository
+import ru.shvets.springshop.util.Utils.toDate
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -125,23 +127,6 @@ class ProductService(
 
     fun minPrice(): Int {
         return productRepository.minPrice().roundToInt()
-    }
-
-    fun Long.toDate(): String = SimpleDateFormat("dd/MM/yyyy").format(Date(this))
-
-    fun Product.toDto(): ProductDto {
-        return ProductDto(
-            id = this.id,
-            name = this.name,
-            created = this.created.toDate(),
-            price = this.price,
-            oldPrice = this.oldPrice,
-            state = this.state,
-            sold = this.sold.toDate(),
-            image = this.image,
-            description = this.description,
-            productType = this.productType
-        )
     }
 
     companion object {

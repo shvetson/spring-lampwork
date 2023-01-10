@@ -3,12 +3,7 @@ package ru.shvets.springshop.controller
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
-import ru.shvets.springshop.entity.Product
-import ru.shvets.springshop.entity.ProductType
+import org.springframework.web.bind.annotation.*
 import ru.shvets.springshop.service.ProductService
 import ru.shvets.springshop.service.ProductTypeService
 
@@ -19,7 +14,7 @@ import ru.shvets.springshop.service.ProductTypeService
  */
 
 @Controller
-//@RequestMapping("/api/v1")
+@RequestMapping("/api/v1")
 class DefaultController(
     private val productTypeService: ProductTypeService,
     private val productService: ProductService
@@ -64,69 +59,5 @@ class DefaultController(
     fun products(@PathVariable("id") id: Long, model: Model): String {
         model["product"] = productService.getById(id)
         return "product"
-    }
-
-    @GetMapping(*["/admin", "/admin/products"])
-    fun productsList(model: Model): String {
-        model["products"] = productService.getAll()
-        return "productsList"
-    }
-
-    @PostMapping("/admin/products/add")
-    fun productListAddSubmit(product: Product): String {
-        productService.save(product)
-        return "redirect:/admin/products"
-    }
-
-    @GetMapping("/admin/products/add")
-    fun productListAdd(model: Model): String {
-        model["types"] = productTypeService.getAll()
-        model["product"] = productService.create()
-        model["flagEdit"] = false
-        return "productForm"
-    }
-
-    @GetMapping("/admin/products/delete/{id}")
-    fun productListDelete(@PathVariable("id") id: Long): String {
-        productService.delete(id)
-        return "redirect:/admin/products"
-    }
-
-    @GetMapping("/admin/products/edit/{id}")
-    fun productListEdit(@PathVariable("id") id: Long, model: Model): String {
-        model["types"] = productTypeService.getAll()
-        model["product"] = productService.getById(id)
-        model["flagEdit"] = true
-        return "productForm"
-    }
-
-    @GetMapping("/admin/types")
-    fun productTypeList(model: Model): String {
-        model["types"] = productTypeService.getAll()
-        return "typesList"
-    }
-
-    @PostMapping("/admin/types/add")
-    fun productTypeListAddSubmit(productType: ProductType): String {
-        productTypeService.save(productType)
-        return "redirect:/admin/types"
-    }
-
-    @GetMapping("/admin/types/add")
-    fun productTypeListAdd(model: Model): String {
-        model["productType"] = productTypeService.create()
-        return "typeForm"
-    }
-
-    @GetMapping("/admin/types/delete/{id}")
-    fun productTypeListDelete(@PathVariable("id") id: Long): String {
-        productTypeService.delete(id)
-        return "redirect:/admin/types"
-    }
-
-    @GetMapping("/admin/types/edit/{id}")
-    fun productTypeListEdit(@PathVariable("id") id: Long, model: Model): String {
-        model["productType"] = productTypeService.getById(id)
-        return "typeForm"
     }
 }

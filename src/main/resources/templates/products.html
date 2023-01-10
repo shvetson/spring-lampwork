@@ -14,7 +14,7 @@
     <section>
         <div class="container-xxl">
             <div class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <a href="/api/v1/index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                     <svg class="bi me-2" width="40" height="32">
                         <use xlink:href="#bootstrap"></use>
                     </svg>
@@ -22,7 +22,7 @@
                 </a>
 
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a href="/index" class="nav-link px-2 link-dark">Home</a></li>
+                    <li class="nav-item"><a href="/api/v1/index" class="nav-link px-2 link-dark">Home</a></li>
                     <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Галерея</a></li>
                     <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">About</a></li>
                 </ul>
@@ -35,7 +35,7 @@
     <div class="container-xxl">
         <div class="row">
             <div class="col-3">
-                <form th:action="@{/gallery/filter}" method="POST">
+                <form th:action="@{/api/v1/gallery/filter}" method="POST">
                     <p>Фильтр</p>
                     <a style="font-weight: bold">Категория</a>
 
@@ -135,7 +135,7 @@
                                         <span class="product_old_price"
                                               th:unless="${product.oldPrice} == 0">&#8381;<span
                                                 th:text="${product.oldPrice}"></span></span></h6>
-                                    <a class="stretched-link card-link" th:href="@{'/products/'+ ${product.id}}"><span
+                                    <a class="stretched-link card-link" th:href="@{'/api/v1/products/'+ ${product.id}}"><span
                                             class="sr-only"></span></a>
                                 </div>
 

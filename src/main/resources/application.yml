@@ -21,3 +21,11 @@ spring:
   
 server:
   port: 8080
+
+app:
+  title: Lampwork
+  subtitle: Marketplace
+  email: shvetson@gmail.com
+  phone: +7(916) 610-90-92
+  copyright: Oleg Shvets
+  copyrightFrom: 2022
