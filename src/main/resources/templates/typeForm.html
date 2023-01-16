@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <th:block th:insert="~{fragments :: link}"></th:block>
     <title>Админ. Новая группа</title>
 </head>
 <body>
@@ -55,6 +55,6 @@
 </section>
 
 </body>
-
-<script defer src="/js/bootstrap.bundle.min.js"></script>
+<div th:insert="~{fragments :: copyright}"></div>
+<th:block th:insert="~{fragments :: script}"></th:block>
 </html>

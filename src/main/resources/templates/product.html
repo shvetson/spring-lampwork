@@ -1,44 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
-    <title>Украшение</title>
+    <title th:replace="~{fragments :: title}">Title</title>
+    <th:block th:insert="~{fragments :: link}"></th:block>
 </head>
 <body>
+<div th:replace="~{fragments :: menu}"></div>
 
-<header>
-    <section>
-        <div class="container-xxl">
-            <div class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
-                <a href="/api/v1/index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32">
-                        <use xlink:href="#bootstrap"></use>
-                    </svg>
-                    <span class="fs-4">Лэмпворк</span>
-                </a>
-
-                <ul class="nav nav-pills">
-                    <li class="nav-item"><a href="/api/v1/index" class="nav-link px-2 link-dark">Home</a></li>
-                    <li class="nav-item"><a href="/api/v1/gallery" class="nav-link px-2 link-dark">Галерея</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Украшение</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">About</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-</header>
-
+<div class="container-xxl">
 <section>
-    <div class="container-xxl">
         <div th:object="${product}">
             <div class="card my-5 border-0">
                 <div class="row g-0 mb-3">
                     <div class="col-md-6">
-                        <img th:src="@{'/fotos/' + ${product.image}}" class="img-fluid rounded-start" alt="Photo">
+                        <img th:src="@{'/img/' + ${product.image}}" class="img-fluid rounded-start" alt="Photo">
 
                         <span class="position-absolute top-0 start-100 translate-middle p-2 badge text-bg-danger rounded-pill"
                               th:if="${product.state.equals(product.state.NEW)}">NEW<span
@@ -72,35 +51,16 @@
                 </div>
 
                 <ul class="list-unstyled mt-3">
-                    <li><strong>Категория: </strong><a class="text-muted text-decoration-none" href="#" th:text="${product.productType}"></a></li>
+                    <li><strong>Категория: </strong><a class="text-muted text-decoration-none" href="#" th:text="${product.productType.name}"></a></li>
                     <li><strong>Лот: </strong><a class="text-muted text-decoration-none" href="#" th:text="${product.id}"></a>
                     </li>
                 </ul>
             </div>
         </div>
-    </div>
 </section>
+</div>
 
-<footer>
-    <section>
-        <div class="container-xxl ">
-            <div class="d-flex bg-light flex-wrap justify-content-center mb-3 mt-5">
-                <div class="col-md-10">
-                    <p>© 2022 Your company. All rights reserved.</p>
-                </div>
-
-                <div class="col-md-2 social">
-                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-telegram" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-facebook fa-1x" aria-hidden="true"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-</footer>
-
-<script defer src="/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="js/bootstrap.bundle.min.js" ></script> -->
+<div th:insert="~{fragments :: copyright}"></div>
+<th:block th:insert="~{fragments :: script}"></th:block>
 </body>
 </html>

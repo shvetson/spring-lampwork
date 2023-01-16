@@ -1,5 +1,7 @@
 package ru.shvets.springshop.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
+import org.hibernate.Hibernate
 import javax.persistence.*
 
 /**
@@ -10,7 +12,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "product_type")
-class ProductType(
+data class ProductType(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
@@ -19,10 +21,23 @@ class ProductType(
     @Column(name = "order_id")
     val orderId: Int,
 
-    @OneToMany(mappedBy = "productType")
-    val products: List<Product> = emptyList()
+    @OneToMany(mappedBy = "productType", fetch = FetchType.EAGER)
+    @JsonBackReference
+    val products: MutableList<Product> = mutableListOf()
 ) {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
+        other as ProductType
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = javaClass.hashCode()
+
+    @Override
     override fun toString(): String {
-        return name
+        return this::class.simpleName + "(id = $id, name = $name  )"
     }
 }

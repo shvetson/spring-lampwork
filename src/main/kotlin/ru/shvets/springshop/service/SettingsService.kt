@@ -13,10 +13,11 @@ import ru.shvets.springshop.api.response.SettingsResponse
 class SettingsService {
 
     fun getGlobalSettings(): SettingsResponse {
-        val settingsResponse = SettingsResponse()
-        settingsResponse.authenticationMode = true
-        settingsResponse.pagingCount = 10
-        settingsResponse.countDaysWithoutActivity = 60
-        return settingsResponse
+        return SettingsResponse(
+            pagingLimit = 10,
+            pagingOffset = 0,
+            countDaysWithoutActivity = 60,
+            authenticationMode = true
+        )
     }
 }

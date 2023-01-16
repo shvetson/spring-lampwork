@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:insert="~{fragments :: link}"></th:block>
+    <title>Админ. Загрузка файлов</title>
+</head>
+<body>
+
+<div th:if="${message}">
+    <h4 th:text="${message}"/>
+</div>
+
+<div>
+    <form th:method="POST" enctype="multipart/form-data" th:action="@{/upload}">
+        <table>
+            <tr>
+                <td>File to upload:</td>
+                <td><input type="file" name="file"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Upload"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div>
+    <img th:if="${filename}" th:src="@{'/img/' + ${filename}}" width="400" alt="image">
+</div>
+
+</body>
+<div th:insert="~{fragments :: copyright}"></div>
+<th:block th:insert="~{fragments :: script}"></th:block>
+</html>

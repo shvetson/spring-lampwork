@@ -23,8 +23,8 @@ class SecurityConfig {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.authorizeRequests()
-            .antMatchers("/admin/**").hasRole("ADMIN")
-            .antMatchers("/index").permitAll()
+//            .antMatchers("/admin/**").hasRole("ADMIN")
+            .antMatchers("/**").permitAll()
             .and().formLogin()
 //            .requestMatchers("/css/**").permitAll()
 //            .requestMatchers("/user/**").hasAuthority("ROLE_USER")

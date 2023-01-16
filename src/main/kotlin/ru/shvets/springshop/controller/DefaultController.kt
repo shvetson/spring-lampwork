@@ -19,9 +19,19 @@ class DefaultController(
     private val productTypeService: ProductTypeService,
     private val productService: ProductService
 ) {
-    @GetMapping("/index")
+    @GetMapping("/home")
     fun home(model: Model): String {
         return "index"
+    }
+
+    @GetMapping("/about")
+    fun about(model: Model): String {
+        return "about"
+    }
+
+    @GetMapping("/contacts")
+    fun contacts(model: Model): String {
+        return "contacts"
     }
 
     @GetMapping("/gallery")

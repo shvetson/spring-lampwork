@@ -1,7 +1,6 @@
 package ru.shvets.springshop.api.response
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.springframework.security.core.Authentication
 
 /**
  * @author  Oleg Shvets
@@ -9,22 +8,13 @@ import org.springframework.security.core.Authentication
  * @date  10.01.2023 22:57
  */
 
-class SettingsResponse {
-    @JsonProperty("PAGING_COUNT")
-    var pagingCount: Int? = null
+data class SettingsResponse(
+    @JsonProperty("PAGING_LIMIT")
+    val pagingLimit: Int?,
+    @JsonProperty("PAGING_OFFSET")
+    val pagingOffset: Int?,
     @JsonProperty("COUNT_DAYS_WITHOUT_ACTIVITY")
-    var countDaysWithoutActivity: Int? = null
+    val countDaysWithoutActivity: Int?,
     @JsonProperty("AUTHENTICATION_MODE")
-    var authenticationMode: Boolean? = null
-
-    constructor()
-    constructor(
-        pagingCount: Int,
-        countDaysWithoutActivity: Int,
-        authenticationMode: Boolean
-    ): super() {
-        this.pagingCount = pagingCount
-        this.countDaysWithoutActivity = countDaysWithoutActivity
-        this.authenticationMode = authenticationMode
-    }
-}
+    val authenticationMode: Boolean?
+)

@@ -1,131 +1,154 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <th:block th:insert="~{fragments :: link}"></th:block>
     <title>Админ. Новый товар</title>
 </head>
 <body>
-<section>
-    <div class="container-xxl">
-        <header class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
+<div class="container-xxl">
+    <header class="header row d-flex bg-light flex-wrap justify-content-between mb-4 border-bottom">
+
+        <div class="col-3 text-start">
+            <div class="block">Логотип</div>
+
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                 <svg class="bi me-2" width="40" height="32">
                     <use xlink:href="#bootstrap"></use>
                 </svg>
                 <span class="fs-4">Администрирование</span>
             </a>
-
-            <ul class="nav nav-pills">
-                <li class="nav-item"><a href="/index" class="nav-link px-2">Home</a></li>
-                <li class="nav-item"><a href="/admin/products" class="nav-link px-2">Продукты</a></li>
-                <li class="nav-item"><a href="/admin/types" class="nav-link px-2">Группы</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary"><span th:text="${product.name}"></span></a></li>
-            </ul>
-        </header>
-    </div>
-</section>
-
-<section>
-    <div class="container-xxl">
-
-        <div th:switch="${flagEdit}">
-            <h2 th:case="true">Редактирование товара</h2>
-            <h2 th:case="false">Новый товар</h2>
         </div>
 
-        <form class="row g-3" th:action="@{/admin/products/add}" th:object="${product}" method="POST">
-            <input type="text" th:field="*{id}" hidden/>
+        <div class="col">
+            <div class="block">Навигация</div>
 
-            <div class="row my-3">
-                <label for="nameInput" class="col-2 col-form-label">Товар</label>
-                <div class="col-4">
-                    <input type="text" class="form-control" id="nameInput" placeholder="Наименование товара"
-                           th:field="*{name}" required>
-                </div>
+            <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item"><a href="/api/v1/home" class="nav-link px-2">Home</a></li>
+                <li class="nav-item"><a href="/admin/products" class="nav-link px-2">Продукты</a></li>
+                <li class="nav-item"><a href="/admin/types" class="nav-link px-2">Группы</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary"><span
+                        th:text="${product.name}"></span></a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="title row">
+        <div class="col text-center">
+            <div th:switch="${flagEdit}">
+                <h2 th:case="true">Редактирование товара</h2>
+                <h2 th:case="false">Новый товар</h2>
             </div>
+        </div>
+    </section>
 
-            <div class="row mb-3">
-                <label for="typeSelect" class="col-2 col-form-label">Группа товаров</label>
-                <div class="col-4">
-                    <select class="form-select" id="typeSelect" th:field="*{productType}" required>
-                        <option selected disabled value="">Выберите ...</option>
-                        <option th:each="type : ${types}"
-                                th:value="${type.id}"
-                                th:utext="${type.name}">
-                        </option>
-                    </select>
+    <section class="form-enter row">
+        <div class="col-6">
+            <form th:action="@{/admin/products/add}" enctype="multipart/form-data" th:object="${product}" th:method="POST">
+                <input type="text" th:field="*{id}" hidden/>
+
+                <div class="row mb-3">
+                    <label for="nameInput" class="col-3 col-form-label">Товар</label>
+                    <div class="col-9">
+                        <input type="text" class="form-control" id="nameInput" placeholder="Наименование товара"
+                               th:field="*{name}" required>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label for="descriptionInput" class="col-2 col-form-label">Описание</label>
-                <div class="col-4">
+                <div class="row mb-3">
+                    <label for="typeSelect" class="col-3 col-form-label">Группа товаров</label>
+                    <div class="col-9">
+                        <select class="form-select" id="typeSelect" th:field="*{productType}" required>
+                            <option selected disabled value="">Выберите ...</option>
+                            <option th:each="type : ${types}"
+                                    th:value="${type.id}"
+                                    th:utext="${type.name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3 justify-content-between">
+                    <label for="descriptionInput" class="col-3 col-form-label">Описание</label>
+                    <div class="col-9">
                     <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Описание товара"
                               th:field="*{description}"></textarea>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label for="priceInput" class="col-2 col-form-label">Цена</label>
-                <div class="col-4">
-                    <input type="number" class="form-control" id="priceInput" placeholder="Цена товара" min="0" th:field="*{price}" required>
+                <div class="row mb-3 justify-content-between">
+                    <label for="priceInput" class="col-3 col-form-label">Цена</label>
+                    <div class="col-9">
+                        <input type="number" class="form-control" id="priceInput" placeholder="Цена товара" min="0"
+                               th:field="*{price}" required>
+                    </div>
                 </div>
-            </div>
 
-            <th:block th:if="${flagEdit}">
-            <div class="row mb-3">
-                <label for="oldPriceInput" class="col-2 col-form-label">Старая цена</label>
-                <div class="col-4">
-                    <input type="number" class="form-control" id="oldPriceInput" placeholder="Старая цена товара" min="0" th:field="*{oldPrice}">
+                <th:block th:if="${flagEdit}">
+                    <div class="row mb-3">
+                        <label for="oldPriceInput" class="col-3 col-form-label">Старая цена</label>
+                        <div class="col-9">
+                            <input type="number" class="form-control" id="oldPriceInput"
+                                   placeholder="Старая цена товара" min="0" th:field="*{oldPrice}">
+                        </div>
+                    </div>
+                </th:block>
+
+                <div class="row mb-3">
+                    <label for="indicationSelect" class="col-3 col-form-label">Статус товара</label>
+                    <div class="col-9">
+                        <select class="form-select" id="indicationSelect" th:field="*{state}" required>
+                            <option selected disabled value="">Выберите ...</option>
+                            <option th:each="state : ${T(ru.shvets.springshop.entity.ProductState).values()}"
+                                    th:value="${state}"
+                                    th:utext="${state}">
+                            </option>
+                        </select>
+                    </div>
                 </div>
-            </div>
 
-<!--                <div class="row mb-3">-->
-<!--                    <div class="col-2">-->
-<!--                        <p>Признак товара</p>-->
-<!--                    </div>-->
-<!--                    <div class="col-4">-->
-<!--                        <input class="form-check-input" type="checkbox" value="" id="hotProductCheck" th:field="*{hotProduct}">-->
-<!--                        <label class="form-check-label" for="hotProductCheck">Hot продукт</label>-->
-<!--                    </div>-->
-<!--                </div>-->
-            </th:block>
+<!--                Добавление-->
+                <th:block th:if="${!flagEdit}">
+                    <div class="row mb-3">
+                        <label for="fileInput" class="col-3 col-form-label">Наименование файла</label>
+                        <div class="col-9">
+                            <input type="text" th:field="*{image}" hidden/>
+                            <input type="file" class="form-control" id="fileInput" name="file"
+                                   accept=".jpg, .jpeg, .png" required>
+                        </div>
+                    </div>
+                </th:block>
 
-            <div class="row mb-3">
-                <label for="indicationSelect" class="col-2 col-form-label">Статус товара</label>
-                <div class="col-4">
-                    <select class="form-select" id="indicationSelect" th:field="*{state}" required>
-                        <option selected disabled value="">Выберите ...</option>
-                        <option th:each="state : ${T(ru.shvets.springshop.entity.ProductState).values()}"
-                                th:value="${state}"
-                                th:utext="${state}">
-                        </option>
-                    </select>
+<!--                Редактирование-->
+                <th:block th:if="${flagEdit}">
+                    <div class="row mb-3">
+                        <label for="imageInput" class="col-3 col-form-label">Наименование файла</label>
+                        <div class="col-9">
+                            <input type="text" class="form-control" th:field="*{image}" readonly>
+                            <input type="file" class="form-control" id="imageInput" name="file"
+                                   accept=".jpg, .jpeg, .png">
+                        </div>
+                    </div>
+                </th:block>
+
+                <div class="col-12">
+                    <button class="btn btn-sm btn-primary" type="submit">Сохранить</button>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label for="imageInput" class="col-2 col-form-label">Наименование файла</label>
-                <div class="col-4">
-                    <input type="file" class="form-control" id="imageInput" th:utext="*{image}" th:field="*{image}"
-                           accept=".jpg, .jpeg, .png" required>
-                </div>
-            </div>
+            </form>
+        </div>
 
-            <div class="col-12">
-                <button class="btn btn-sm btn-primary" type="submit">Сохранить</button>
-            </div>
+        <div class="col align-self-center text-center">
+            <img th:if="${!product.image.isEmpty()}" th:src="@{'/img/' + ${product.image}}" class="rounded" width="500">
+        </div>
+    </section>
 
-        </form>
-
-    </div>
-</section>
+</div>
 
 </body>
-<script defer src="/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="js/bootstrap.bundle.min.js" ></script> -->
+<div th:insert="~{fragments :: copyright}"></div>
+<th:block th:insert="~{fragments :: script}"></th:block>
 </html>

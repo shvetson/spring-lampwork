@@ -7,7 +7,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: false
         temp:
           use_jdbc_metadata_defaults: false
@@ -18,7 +18,11 @@ spring:
     enabled: true
     prefix: classpath:/templates/
     suffix: .html
-  
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
 server:
   port: 8080
 
@@ -29,3 +33,8 @@ app:
   phone: +7(916) 610-90-92
   copyright: Oleg Shvets
   copyrightFrom: 2022
+
+upload:
+  path: /home/master/Downloads/files
+
+

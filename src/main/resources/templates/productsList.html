@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <th:block th:insert="~{fragments :: link}"></th:block>
     <title>Админ. Список товаров</title>
 </head>
 <body>
@@ -13,7 +13,7 @@
 <section>
     <div class="container-xxl">
         <header class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <a href="/api/v1/home" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                 <svg class="bi me-2" width="40" height="32">
                     <use xlink:href="#bootstrap"></use>
                 </svg>
@@ -21,7 +21,7 @@
             </a>
 
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="/index" class="nav-link px-2">Home</a></li>
+                <li class="nav-item"><a href="/api/v1/home" class="nav-link px-2">Home</a></li>
                 <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Продукты</a></li>
                 <li class="nav-item"><a href="/admin/types" class="nav-link px-2">Группы</a></li>
             </ul>
@@ -53,7 +53,7 @@
                 <tr style="text-align: center">
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${product.name}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.productType}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
+                    <td th:text="${product.productType.name}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
                     <td th:text="${product.oldPrice}" style="text-align: center; padding-left: 10px; padding-right: 10px;"></td>
                     <td th:text="${product.price}" style="text-align: center; padding-left: 10px; padding-right: 10px;"></td>
                     <td th:text="${product.state}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
@@ -85,7 +85,6 @@
 </section>
 
 </body>
-
-<script defer src="/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="js/bootstrap.bundle.min.js" ></script> -->
+<div th:insert="~{fragments :: copyright}"></div>
+<th:block th:insert="~{fragments :: script}"></th:block>
 </html>

@@ -3,14 +3,14 @@ package ru.shvets.springshop.controller
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import ru.shvets.springshop.entity.Product
 import ru.shvets.springshop.entity.ProductType
+import ru.shvets.springshop.model.User
 import ru.shvets.springshop.service.ProductService
 import ru.shvets.springshop.service.ProductTypeService
+import java.util.*
 
 /**
  * @author  Oleg Shvets
@@ -19,7 +19,7 @@ import ru.shvets.springshop.service.ProductTypeService
  */
 
 @Controller
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/admin")
 class AdminController(
     private val productTypeService: ProductTypeService,
     private val productService: ProductService
@@ -32,9 +32,21 @@ class AdminController(
     }
 
     @PostMapping("/products/add")
-    fun productListAddSubmit(product: Product): String {
+    fun productListAddSubmit(
+        @ModelAttribute product: Product,
+        @RequestParam(name = "file", required = false) file: MultipartFile
+    ): String {
+        if (!file.isEmpty) {
+            if (product.id != 0L && product.image != file.originalFilename) {
+                println("Разные файлы")
+                productService.deleteFileByProductId(product.id)
+            }
+            product.image = productService.transferFile(file)
+        }
+
         productService.save(product)
-        return "redirect:/api/v1/admin/products"
+        return "redirect:/admin/products"
+//        return "productForm"
     }
 
     @GetMapping("/products/add")
@@ -47,8 +59,10 @@ class AdminController(
 
     @GetMapping("/products/delete/{id}")
     fun productListDelete(@PathVariable("id") id: Long): String {
-        productService.delete(id)
-        return "redirect:/api/v1/admin/products"
+        if (productService.deleteFileByProductId(id)) {
+            productService.delete(id)
+        }
+        return "redirect:/admin/products"
     }
 
     @GetMapping("/products/edit/{id}")
@@ -68,7 +82,7 @@ class AdminController(
     @PostMapping("/types/add")
     fun productTypeListAddSubmit(productType: ProductType): String {
         productTypeService.save(productType)
-        return "redirect:/api/v1/admin/types"
+        return "redirect:/admin/types"
     }
 
     @GetMapping("/types/add")
@@ -80,7 +94,7 @@ class AdminController(
     @GetMapping("/types/delete/{id}")
     fun productTypeListDelete(@PathVariable("id") id: Long): String {
         productTypeService.delete(id)
-        return "redirect:/api/v1/admin/types"
+        return "redirect:/admin/types"
     }
 
     @GetMapping("/types/edit/{id}")
@@ -89,4 +103,8 @@ class AdminController(
         return "typeForm"
     }
 
+    @GetMapping("/users")
+    fun getAllUsers(): List<User> {
+        return emptyList()
+    }
 }

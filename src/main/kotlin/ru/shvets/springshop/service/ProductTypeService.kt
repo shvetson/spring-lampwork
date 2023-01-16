@@ -1,13 +1,10 @@
 package ru.shvets.springshop.service
 
-import org.slf4j.LoggerFactory
-import org.springframework.http.HttpStatus
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.ResponseStatus
-import ru.shvets.springshop.controller.DefaultController
-import ru.shvets.springshop.entity.Product
 import ru.shvets.springshop.entity.ProductType
+import ru.shvets.springshop.exception.TypeNotFoundException
 import ru.shvets.springshop.repository.ProductRepository
 import ru.shvets.springshop.repository.ProductTypeRepository
 
@@ -22,8 +19,10 @@ class ProductTypeService(
     private val productTypeRepository: ProductTypeRepository,
     private val productRepository: ProductRepository,
 ) {
+    private val logger = KotlinLogging.logger {}
+
     fun getAll(): List<ProductType> {
-        log.info("Find all types")
+        logger.info("Find all types")
         return productTypeRepository.findAll()
     }
 
@@ -33,18 +32,18 @@ class ProductTypeService(
 
     fun getById(id: Long): ProductType {
         val type = productTypeRepository.findById(id).orElse(null) ?: throw TypeNotFoundException(id)
-        log.info("Selected type with id=$id - ${type.name}")
+        logger.info("Selected type with id=$id - ${type.name}")
         return type
     }
 
     fun getAllByOrder(): List<ProductType> {
-        log.info("Find all types")
+        logger.info("Find all types")
         return productTypeRepository.findAllByOrderByOrderIdAsc()
     }
 
     fun save(productType: ProductType) {
         productTypeRepository.save(productType)
-        log.info("Added a new type")
+        logger.info("Added a new type")
     }
 
     fun create(): ProductType {
@@ -61,13 +60,6 @@ class ProductTypeService(
         val productType = productTypeRepository.findById(id).orElse(null) ?: throw TypeNotFoundException(id)
         productRepository.deleteAllByProductType(productType)
         productTypeRepository.delete(productType)
-        log.info("Deleted all products by type with id=$id")
+        logger.info("Deleted all products by type with id=$id")
     }
-
-    companion object {
-        private val log = LoggerFactory.getLogger(DefaultController::class.java)
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    class TypeNotFoundException(id: Long) : RuntimeException("Type with id=$id not found")
 }

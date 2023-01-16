@@ -1,38 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    <th:block th:insert="~{fragments :: link}"></th:block>
     <title>Галерея</title>
 </head>
 <body>
+<div th:replace="~{fragments :: menu}"></div>
 
-<header>
+<div class="container-xxl">
     <section>
-        <div class="container-xxl">
-            <div class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
-                <a href="/api/v1/index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32">
-                        <use xlink:href="#bootstrap"></use>
-                    </svg>
-                    <span class="fs-4">Лэмпворк</span>
-                </a>
 
-                <ul class="nav nav-pills">
-                    <li class="nav-item"><a href="/api/v1/index" class="nav-link px-2 link-dark">Home</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Галерея</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">About</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-</header>
-
-<section>
-    <div class="container-xxl">
         <div class="row">
             <div class="col-3">
                 <form th:action="@{/api/v1/gallery/filter}" method="POST">
@@ -74,9 +55,11 @@
                     <a style="font-weight: bold;">Цена <span id="rangeValue" style="font-weight: normal;"></span></a>
                     <div class="col-9 mt-2">
                         <div class="row row-cols-3 mb-2">
-                            <div class="col"><span class="border border-2 p-1 rounded" th:utext="${minPrice}"></span></div>
+                            <div class="col"><span class="border border-2 p-1 rounded" th:utext="${minPrice}"></span>
+                            </div>
                             <div class="col text-center"><span>-</span></div>
-                            <div class="col text-end"><span class="border border-2 p-1 rounded" th:utext="${maxPrice}"></span></div>
+                            <div class="col text-end"><span class="border border-2 p-1 rounded"
+                                                            th:utext="${maxPrice}"></span></div>
                         </div>
 
                         <div class="form-group">
@@ -112,7 +95,7 @@
                                 <div class="card-body">
                                     <div class="position-relative">
                                         <img class="card-img-top border-bottom border-secondary border-2"
-                                             th:src="@{'/fotos/' + ${product.image}}" alt="image">
+                                             th:src="@{'/img/' + ${product.image}}" alt="image">
 
                                         <!--                                <p>Status: <span th:utext="${product.state}?: '(no state specified)'"></span></p>-->
 
@@ -145,29 +128,10 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-<footer>
-    <section>
-        <div class="container-xxl ">
-            <div class="d-flex bg-light flex-wrap justify-content-center mb-3">
-                <div class="col-md-10">
-                    <p>© 2022 Your company. All rights reserved.</p>
-                </div>
-
-                <div class="col-md-2 social">
-                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-telegram" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-facebook fa-1x" aria-hidden="true"></i></a>
-                </div>
-            </div>
-        </div>
     </section>
-</footer>
+</div>
 
-<script defer src="/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="js/bootstrap.bundle.min.js" ></script> -->
+<div th:insert="~{fragments :: copyright}"></div>
+<th:block th:insert="~{fragments :: script}"></th:block>
 </body>
 </html>

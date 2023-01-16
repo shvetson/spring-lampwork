@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:replace="~{fragments :: title}">Title</title>
+    <th:block th:insert="~{fragments :: link}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments :: menu}"></div>
+
+<div class="container-xxl">
+    <div class="row">
+
+        <div class="col-1">
+        </div>
+
+        <div class="col">
+            <div class="message">
+                <span>Хотите купить готовую работу или сделать персональный заказ?</span><br>
+                <strong><span style="font-size: 24px;">Свяжитесь со мной удобным способом!</span></strong><br><br>
+                <p>Анжелика Швец<br>Дизайнер украшений </p>
+            </div>
+
+            <div class="contacts">
+                <strong>WhatsApp: </strong><a href="https://wa.me/79859133479" target=”_blank”>+7(985)913-34-79</a><br>
+                <strong>E-mail: </strong><a href="mailto:shvetsav@mail.ru" target=”_blank”>shvetsav@mail.ru</a><br><br>
+
+                <span>Интересно следить за новинками? Подписывайтесь!</span><br>
+                <table>
+                    <tr>
+                        <td><b>Телеграм:</b></td>
+                        <td><a href="https://t.me/Anzhelika_Shvets" target=”_blank”>Написать в telegram</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>Вконтакте:</b></td>
+                        <td><a href="https://vk.com/shvetsav" target=”_blank”>Написать в VK</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>Instagram:</b></td>
+                        <td><a href="https://www.instagram.com/.../" target=”_blank”>Instagram</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div th:insert="~{fragments :: copyright}"></div>
+<th:block th:insert="~{fragments :: script}"></th:block>
+</body>
+</html>

@@ -18,7 +18,7 @@ interface ProductRepository: JpaRepository<Product, Long> {
 
     fun findAllByOrderById(): List<Product>
     fun findAllByProductType(productType: ProductType): List<Product>
-    fun findAllByProductTypeAndStateInAndPriceLessThanEqual(productType: ProductType, listState: List<ProductState>, price: Float): List<Product>
+    fun findAllByProductTypeAndStateInAndPriceLessThanEqual(productType: ProductType, listState: List<ProductState>, price: Int): List<Product>
     fun deleteAllByProductType(productType: ProductType)
 
     @Query(nativeQuery = true, value = "select max(price) from products")

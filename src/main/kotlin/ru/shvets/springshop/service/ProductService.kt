@@ -1,23 +1,24 @@
 package ru.shvets.springshop.service
 
-import com.fasterxml.jackson.databind.deser.DataFormatReaders
-import org.slf4j.LoggerFactory
-import org.springframework.http.HttpStatus
+import mu.KotlinLogging
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.multipart.MultipartFile
+import ru.shvets.springshop.api.response.ProductsResponse
+import ru.shvets.springshop.api.response.ProductsResponse.Companion.toResponse
 import ru.shvets.springshop.dto.ProductDto
-import ru.shvets.springshop.controller.DefaultController
 import ru.shvets.springshop.dto.ProductDto.Companion.toDto
 import ru.shvets.springshop.entity.Product
 import ru.shvets.springshop.entity.ProductState
 import ru.shvets.springshop.entity.ProductType
+import ru.shvets.springshop.exception.ProductNotFoundException
 import ru.shvets.springshop.repository.ProductRepository
 import ru.shvets.springshop.repository.ProductTypeRepository
-import ru.shvets.springshop.util.Utils.toDate
-import java.text.SimpleDateFormat
+import java.io.File
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
-import kotlin.collections.HashMap
-import kotlin.math.floor
 import kotlin.math.roundToInt
 
 /**
@@ -31,10 +32,22 @@ class ProductService(
     private val productTypeRepository: ProductTypeRepository,
     private val productRepository: ProductRepository
 ) {
+    private val logger = KotlinLogging.logger {}
+
+    @Value("\${upload.path}")
+    lateinit var uploadPath: String
+
     fun getAll(): List<ProductDto> {
-        log.info("Find all products")
+        logger.info("Сформирован список всех продуктов.")
         return productRepository.findAllByOrderById().map {
             it.toDto()
+        }
+    }
+
+    fun getAllForApi(): List<ProductsResponse> {
+        logger.info("Список всех товаров выгружен через API.")
+        return getAll().map {
+            it.toResponse()
         }
     }
 
@@ -47,7 +60,7 @@ class ProductService(
                 it.toDto()
             }
         }
-        log.info("Find all products by types")
+        logger.info("Сформирован список всех продуктов в разрезе по видам.")
         return mapProductAndType
     }
 
@@ -80,17 +93,21 @@ class ProductService(
         val mapProductAndType: LinkedHashMap<ProductType, List<ProductDto>> = LinkedHashMap()
 
         listTypes.forEach { type ->
-            mapProductAndType[type] = productRepository.findAllByProductTypeAndStateInAndPriceLessThanEqual(type, listState, priceRangeProducts.toFloat()).map {
+            mapProductAndType[type] = productRepository.findAllByProductTypeAndStateInAndPriceLessThanEqual(
+                type,
+                listState,
+                priceRangeProducts.toInt()
+            ).map {
                 it.toDto()
             }
         }
-        log.info("Find all products by types")
+        logger.info("Сформирован список всех продуктов по фильтру.")
         return mapProductAndType
     }
 
     fun getById(id: Long): Product {
         val product = productRepository.findById(id).orElse(null) ?: throw ProductNotFoundException(id)
-        log.info("Selected product with id=$id - ${product.name}")
+        logger.info("Выбран товар ${product.name}")
         return product
     }
 
@@ -102,8 +119,8 @@ class ProductService(
         return Product(
             id = 0L,
             name = "",
-            price = 0F,
-            oldPrice = 0F,
+            price = 0,
+            oldPrice = 0,
             image = "",
             description = "",
             productType = types[indexNewType]
@@ -112,13 +129,49 @@ class ProductService(
 
     fun save(product: Product) {
         productRepository.save(product)
-        log.info("Added a new product")
+        logger.info("Добавлен новый || обновлен продукт - ${product.name}.")
     }
 
     fun delete(id: Long) {
         val product = productRepository.findById(id).orElse(null) ?: throw ProductNotFoundException(id)
         productRepository.delete(product)
-        log.info("Deleted product with id=$id")
+        logger.info("Данные о продукте удалены.")
+    }
+
+    fun deleteFileByProductId(id: Long): Boolean {
+        val product = getById(id)
+        val filename = product.image
+        val path = Paths.get("$uploadPath/$filename")
+
+        return try {
+            val result = Files.deleteIfExists(path)
+            if (result) {
+                logger.info("Файл картинки продукта удален.")
+                true
+            } else {
+                logger.error("Файл картинки продукта не удалось удалить.")
+                false
+            }
+        } catch (e: IOException) {
+            logger.error("Файл картинки продукта не удалось удалить.")
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun transferFile(file: MultipartFile): String {
+        val uploadDir = File(uploadPath)
+
+        if (!File(uploadPath).exists()) {
+            logger.error("Директория для хранения файлов (по умолчанию) не существует.")
+            uploadDir.mkdir()
+        }
+
+        val uuidFile = UUID.randomUUID().toString().replace("-", "").substring(0, 10)
+        val resultFileName = uuidFile + "." + getFileExtension(file)
+        file.transferTo(File("$uploadPath/$resultFileName"))
+
+        return resultFileName
     }
 
     fun maxPrice(): Int {
@@ -129,10 +182,13 @@ class ProductService(
         return productRepository.minPrice().roundToInt()
     }
 
-    companion object {
-        private val log = LoggerFactory.getLogger(DefaultController::class.java)
-    }
+    fun getFileExtension(file: MultipartFile): String {
+        val fileName = file.originalFilename
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    class ProductNotFoundException(id: Long) : RuntimeException("Product with id=$id not found")
+        return if (fileName?.lastIndexOf(".") != -1 && fileName?.lastIndexOf(".") != 0) {
+            fileName?.substring(fileName.lastIndexOf(".") + 1).toString()
+        } else {
+            ""
+        }
+    }
 }

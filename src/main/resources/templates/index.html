@@ -1,38 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
-    <title>Лэмпворк</title>
+    <title th:replace="~{fragments :: title}">Title</title>
+    <th:block th:insert="~{fragments :: link}"></th:block>
 </head>
 <body>
+<div th:replace="~{fragments :: menu}"></div>
 
-<header>
+<div class="container-xxl">
     <section>
-        <div class="container-xxl">
-            <div class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
-                <a href="/api/v1/index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32">
-                        <use xlink:href="#bootstrap"></use>
-                    </svg>
-                    <span class="fs-4">Лэмпворк</span>
-                </a>
-
-                <ul class="nav nav-pills">
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-                    <li class="nav-item"><a href="/api/v1/gallery" class="nav-link px-2 link-dark">Галерея</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">About</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-</header>
-
-<section>
-    <div class="container-xxl">
         <div class="row align-items-center">
             <div class="col-6">
                 <h1>Добро пожаловать в мир волшебства и красоты</h1>
@@ -41,11 +21,9 @@
                 <img class="w-100" src="/images/main.png" alt="Glass">
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section>
-    <div class="container-xxl">
+    <section>
         <div class="row part1 bg-light flex-wrap text-start justify-content-center py-3 mb-4 border-bottom">
             <h2>Мое творчество</h2>
         </div>
@@ -59,7 +37,8 @@
                                 <img src="/images/carusel11.png" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -70,7 +49,8 @@
                                 <img src="/images/carusel12.png" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -81,7 +61,8 @@
                                 <img src="/images/carusel13.png" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -92,7 +73,8 @@
                                 <img src="/images/carusel14.png" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -107,7 +89,8 @@
                                 <img src="/images/carusel21.jpeg" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -118,7 +101,8 @@
                                 <img src="/images/carusel22.jpeg" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -129,7 +113,8 @@
                                 <img src="/images/carusel23.jpeg" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -140,7 +125,8 @@
                                 <img src="/images/carusel24.jpeg" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -155,7 +141,8 @@
                                 <img src="/images/carusel31.jpeg" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -166,7 +153,8 @@
                                 <img src="/images/carusel32.jpeg" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -177,7 +165,8 @@
                                 <img src="/images/carusel33.jpeg" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -188,7 +177,8 @@
                                 <img src="/images/carusel34.jpeg" class="card-img-top" alt="glass jewelry">
                                 <div class="card-body">
                                     <h5 class="card-title">glass jewelry</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                    <p class="card-text">Some quick example text to build on the card title and make
+                                        up
                                         the bulk of the card's content.</p>
                                     <a href="#" class="btn btn-primary">Подробнее</a>
                                 </div>
@@ -208,30 +198,10 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-
-    </div>
-</section>
-
-<footer>
-    <section>
-        <div class="container-xxl ">
-            <div class="d-flex bg-light flex-wrap justify-content-center mb-3">
-                <div class="col-md-10">
-                    <p>© 2022 Your company. All rights reserved.</p>
-                </div>
-
-                <div class="col-md-2 social">
-                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-telegram" aria-hidden="true"></i></a>
-                    <a href="#"><i class="fa fa-facebook fa-1x" aria-hidden="true"></i></a>
-                </div>
-            </div>
-        </div>
     </section>
-</footer>
+</div>
 
-<script defer src="/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="js/bootstrap.bundle.min.js" ></script> -->
+<div th:insert="~{fragments :: copyright}"></div>
+<th:block th:insert="~{fragments :: script}"></th:block>
 </body>
 </html>
