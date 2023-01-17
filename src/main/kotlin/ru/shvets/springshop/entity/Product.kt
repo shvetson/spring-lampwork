@@ -40,7 +40,11 @@ data class Product(
     @ManyToOne(optional = false, cascade = [CascadeType.ALL])
     @JoinColumn(name = "product_type_id")
     @JsonManagedReference
-    val productType: ProductType
+    val productType: ProductType,
+
+    @ManyToOne(optional = true, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "client_id")
+    val client: Client?
 ) {
 
 //    @PrePersist

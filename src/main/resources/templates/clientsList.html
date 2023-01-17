@@ -6,17 +6,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:insert="~{fragments :: link}"></th:block>
-    <title>Админ. Список товаров</title>
+    <title>Админ. Список клиентов</title>
 </head>
 <body>
 <div th:replace="~{fragments :: menu2}"></div>
 
 <div class="container-xxl">
     <section>
-        <h2>Управление товарами</h2>
+        <h2>Управление клиентами</h2>
 
         <table class="table-responsive table-secondary table-bordered table-striped caption-top">
-            <caption>Список товаров</caption>
+            <caption>Список клиентов</caption>
             <thead style="text-align: center;">
             <th scope="col" style="padding-left: 10px; padding-right: 10px;">#</th>
             <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Название товара</th>
@@ -31,7 +31,7 @@
             <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px">Действия</th>
             </thead>
             <tbody>
-            <div th:each="product, iterStat : ${products}">
+            <div th:each="client, iterStat : ${clients}">
                 <tr style="text-align: center">
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${product.name}"
@@ -71,7 +71,7 @@
             </div>
             </tbody>
             <tfoot>
-            <td colspan="11"><a th:href="@{/admin/products/add}" class="btn btn-sm btn-primary">Добавить</a></td>
+            <td colspan="11"><a th:href="@{/admin/clients/add}" class="btn btn-sm btn-primary">Добавить</a></td>
             </tfoot>
         </table>
     </section>

@@ -44,7 +44,7 @@ class ProductService(
         }
     }
 
-    fun getAllForApi(): List<ProductsResponse> {
+    fun getAllApi(): List<ProductsResponse> {
         logger.info("Список всех товаров выгружен через API.")
         return getAll().map {
             it.toResponse()
@@ -123,7 +123,8 @@ class ProductService(
             oldPrice = 0,
             image = "",
             description = "",
-            productType = types[indexNewType]
+            productType = types[indexNewType],
+            client = null
         )
     }
 

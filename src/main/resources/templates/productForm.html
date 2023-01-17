@@ -9,33 +9,9 @@
     <title>Админ. Новый товар</title>
 </head>
 <body>
+<div th:replace="~{fragments :: menu2}"></div>
+
 <div class="container-xxl">
-    <header class="header row d-flex bg-light flex-wrap justify-content-between mb-4 border-bottom">
-
-        <div class="col-3 text-start">
-            <div class="block">Логотип</div>
-
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <svg class="bi me-2" width="40" height="32">
-                    <use xlink:href="#bootstrap"></use>
-                </svg>
-                <span class="fs-4">Администрирование</span>
-            </a>
-        </div>
-
-        <div class="col">
-            <div class="block">Навигация</div>
-
-            <ul class="nav nav-pills justify-content-end">
-                <li class="nav-item"><a href="/api/v1/home" class="nav-link px-2">Home</a></li>
-                <li class="nav-item"><a href="/admin/products" class="nav-link px-2">Продукты</a></li>
-                <li class="nav-item"><a href="/admin/types" class="nav-link px-2">Группы</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary"><span
-                        th:text="${product.name}"></span></a></li>
-            </ul>
-        </div>
-    </header>
-
     <section class="title row">
         <div class="col text-center">
             <div th:switch="${flagEdit}">
@@ -47,7 +23,8 @@
 
     <section class="form-enter row">
         <div class="col-6">
-            <form th:action="@{/admin/products/add}" enctype="multipart/form-data" th:object="${product}" th:method="POST">
+            <form th:action="@{/admin/products/add}" enctype="multipart/form-data" th:object="${product}"
+                  th:method="POST">
                 <input type="text" th:field="*{id}" hidden/>
 
                 <div class="row mb-3">
@@ -110,7 +87,7 @@
                     </div>
                 </div>
 
-<!--                Добавление-->
+                <!--                Добавление-->
                 <th:block th:if="${!flagEdit}">
                     <div class="row mb-3">
                         <label for="fileInput" class="col-3 col-form-label">Наименование файла</label>
@@ -122,7 +99,7 @@
                     </div>
                 </th:block>
 
-<!--                Редактирование-->
+                <!--                Редактирование-->
                 <th:block th:if="${flagEdit}">
                     <div class="row mb-3">
                         <label for="imageInput" class="col-3 col-form-label">Наименование файла</label>

@@ -1,8 +1,6 @@
 package ru.shvets.springshop.controller
 
 import mu.KotlinLogging
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -11,13 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.shvets.springshop.api.response.InitResponse
 import ru.shvets.springshop.api.response.ProductsResponse
-import ru.shvets.springshop.api.response.ProductsResponse.Companion.toResponse
 import ru.shvets.springshop.api.response.SettingsResponse
-import ru.shvets.springshop.dto.ProductDto
-import ru.shvets.springshop.entity.ProductType
 import ru.shvets.springshop.service.ProductService
 import ru.shvets.springshop.service.SettingsService
-import java.util.LinkedHashMap
 
 /**
  * @author  Oleg Shvets
@@ -49,6 +43,6 @@ class ApiController(
     @GetMapping("/products")
     fun getAllProducts(): ResponseEntity<List<ProductsResponse>> {
         logger.info("Load products data via API")
-        return ResponseEntity(productService.getAllForApi(), HttpStatus.OK )
+        return ResponseEntity(productService.getAllApi(), HttpStatus.OK )
     }
 }

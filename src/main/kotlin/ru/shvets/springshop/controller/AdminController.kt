@@ -5,9 +5,11 @@ import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import ru.shvets.springshop.entity.Client
 import ru.shvets.springshop.entity.Product
 import ru.shvets.springshop.entity.ProductType
 import ru.shvets.springshop.model.User
+import ru.shvets.springshop.service.ClientService
 import ru.shvets.springshop.service.ProductService
 import ru.shvets.springshop.service.ProductTypeService
 import java.util.*
@@ -22,17 +24,18 @@ import java.util.*
 @RequestMapping("/admin")
 class AdminController(
     private val productTypeService: ProductTypeService,
-    private val productService: ProductService
+    private val productService: ProductService,
+    private val clientService: ClientService
 ) {
 
     @GetMapping(*["", "/products"])
-    fun productsList(model: Model): String {
+    fun showProductsList(model: Model): String {
         model["products"] = productService.getAll()
         return "productsList"
     }
 
     @PostMapping("/products/add")
-    fun productListAddSubmit(
+    fun addProduct(
         @ModelAttribute product: Product,
         @RequestParam(name = "file", required = false) file: MultipartFile
     ): String {
@@ -50,7 +53,7 @@ class AdminController(
     }
 
     @GetMapping("/products/add")
-    fun productListAdd(model: Model): String {
+    fun addProduct(model: Model): String {
         model["types"] = productTypeService.getAll()
         model["product"] = productService.create()
         model["flagEdit"] = false
@@ -58,7 +61,7 @@ class AdminController(
     }
 
     @GetMapping("/products/delete/{id}")
-    fun productListDelete(@PathVariable("id") id: Long): String {
+    fun deleteProduct(@PathVariable("id") id: Long): String {
         if (productService.deleteFileByProductId(id)) {
             productService.delete(id)
         }
@@ -66,7 +69,7 @@ class AdminController(
     }
 
     @GetMapping("/products/edit/{id}")
-    fun productListEdit(@PathVariable("id") id: Long, model: Model): String {
+    fun editProduct(@PathVariable("id") id: Long, model: Model): String {
         model["types"] = productTypeService.getAll()
         model["product"] = productService.getById(id)
         model["flagEdit"] = true
@@ -74,37 +77,53 @@ class AdminController(
     }
 
     @GetMapping("/types")
-    fun productTypeList(model: Model): String {
+    fun showProductTypesList(model: Model): String {
         model["types"] = productTypeService.getAll()
         return "typesList"
     }
 
     @PostMapping("/types/add")
-    fun productTypeListAddSubmit(productType: ProductType): String {
+    fun addProductType(productType: ProductType): String {
         productTypeService.save(productType)
         return "redirect:/admin/types"
     }
 
     @GetMapping("/types/add")
-    fun productTypeListAdd(model: Model): String {
+    fun addProductType(model: Model): String {
         model["productType"] = productTypeService.create()
         return "typeForm"
     }
 
     @GetMapping("/types/delete/{id}")
-    fun productTypeListDelete(@PathVariable("id") id: Long): String {
+    fun deleteProductType(@PathVariable("id") id: Long): String {
         productTypeService.delete(id)
         return "redirect:/admin/types"
     }
 
     @GetMapping("/types/edit/{id}")
-    fun productTypeListEdit(@PathVariable("id") id: Long, model: Model): String {
+    fun editProductType(@PathVariable("id") id: Long, model: Model): String {
         model["productType"] = productTypeService.getById(id)
         return "typeForm"
     }
 
-    @GetMapping("/users")
-    fun getAllUsers(): List<User> {
-        return emptyList()
+    @GetMapping("/clients")
+    fun showClientsList(model: Model): String {
+        model["clients"] = clientService.getAll()
+        return "clientsList"
     }
+
+    @GetMapping("/clients/add")
+    fun addClient(model: Model): String {
+        model["client"] = clientService.createClient()
+        model["flagEdit"] = false
+        return "clientForm"
+    }
+
+    @PostMapping("/clients/add")
+    fun addClient(@ModelAttribute client: Client): String {
+        clientService.saveClient(client)
+//        return "redirect:/admin/clients"
+        return "clientForm"
+    }
+
 }

@@ -24,10 +24,35 @@
             </a>
 
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="/api/v1/home" class="nav-link px-2 link-dark">Home</a></li>
-                <li class="nav-item"><a href="/api/v1/gallery" class="nav-link px-2 link-dark">Галерея</a></li>
+                <li class="nav-item"><a href="/api/v1/home" class="nav-link px-2 link-dark">Главная</a></li>
+                <li class="nav-item"><a href="/api/v1/gallery" class="nav-link px-2 link-dark">Коллекция</a></li>
                 <li class="nav-item"><a href="/api/v1/contacts" class="nav-link px-2 link-dark">Контакты</a></li>
-                <li class="nav-item"><a href="/api/v1/about" class="nav-link px-2 link-dark">About</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">FAQ</a></li>
+                <li class="nav-item"><a href="/api/v1/about" class="nav-link px-2 link-dark">О проекте</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<header class="header-admin" th:fragment="menu2">
+    <div class="container-xxl">
+        <div class="d-flex bg-light flex-wrap justify-content-between mb-4 border-bottom">
+            <a href="/api/v1/home"
+               class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+                <span class="fs-4">Администрирование</span>
+            </a>
+
+            <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item"><a href="/api/v1/home" class="nav-link px-2">Главная</a></li>
+                <li class="nav-item"><a href="/admin/products" class="nav-link px-2">Продукты</a></li>
+                <li class="nav-item"><a href="/admin/types" class="nav-link px-2">Группы</a></li>
+                <li class="nav-item"><a href="/admin/clients/add" class="nav-link px-2">Клиенты</a></li>
+
+                <!--            <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary"><span-->
+                <!--                    th:text="${product.name}"></span></a></li>-->
             </ul>
         </div>
     </div>
