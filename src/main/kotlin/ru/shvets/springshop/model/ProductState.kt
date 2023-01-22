@@ -1,4 +1,4 @@
-package ru.shvets.springshop.entity
+package ru.shvets.springshop.model
 
 /**
  * @author  Oleg Shvets

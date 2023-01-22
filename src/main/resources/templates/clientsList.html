@@ -19,38 +19,34 @@
             <caption>Список клиентов</caption>
             <thead style="text-align: center;">
             <th scope="col" style="padding-left: 10px; padding-right: 10px;">#</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Название товара</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Группа</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Старая цена</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Текущая цена</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Статус</th>
-            <!--            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">HOT</th>-->
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Создан</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Продан</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px">Имя файла</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Имя</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Фамилия</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Email</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Телефон</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Telegram</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">WhatsApp</th>
+            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Зарегистрирован</th>
             <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px">Действия</th>
             </thead>
             <tbody>
             <div th:each="client, iterStat : ${clients}">
                 <tr style="text-align: center">
                     <td th:text="${iterStat.index + 1}"></td>
-                    <td th:text="${product.name}"
+                    <td th:text="${client.firstName}"
                         style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.productType.name}"
+                    <td th:text="${client.lastName}"
                         style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.oldPrice}"
-                        style="text-align: center; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.price}"
-                        style="text-align: center; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.state}"
+                    <td th:text="${client.email}"
                         style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <!--                    <td th:text="${product.hotProduct}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>-->
-                    <td th:text="${product.created}"
+                    <td th:text="${client.phone}"
                         style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.sold}"
+                    <td th:text="${client.telegram}"
                         style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.image}"
+                    <td th:text="${client.whatsApp}"
                         style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
+                    <td th:text="${client.created}"
+                        style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
+
                     <!--                    <td><a th:href="@{'/products/edit/' + ${product.id}}"-->
                     <!--                           class="btn btn-sm btn-secondary">Редактировать</a></td>-->
                     <!--                    <td><a th:href="@{'/products/delete/' + ${product.id}}" class="btn btn-sm btn-secondary">Удалить</a>-->
@@ -60,9 +56,9 @@
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                 <i class="bx bx-dots-vertical-rounded"></i></button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" th:href="@{'/admin/products/edit/' + ${product.id}}"><i
+                                <a class="dropdown-item" th:href="@{'/admin/clients/edit/' + ${client.id}}"><i
                                         class="bx bx-edit-alt me-1"></i>Edit</a>
-                                <a class="dropdown-item" th:href="@{'/admin/products/delete/' + ${product.id}}"><i
+                                <a class="dropdown-item" th:href="@{'/admin/clients/delete/' + ${client.id}}"><i
                                         class="bx bx-trash me-1"></i>Delete</a>
                             </div>
                         </div>
@@ -71,7 +67,12 @@
             </div>
             </tbody>
             <tfoot>
-            <td colspan="11"><a th:href="@{/admin/clients/add}" class="btn btn-sm btn-primary">Добавить</a></td>
+            <td colspan="9">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a th:href="@{/admin/clients/add}"
+                       class="btn btn-sm btn-primary justify-content-md-end">Добавить</a>
+                </div>
+            </td>
             </tfoot>
         </table>
     </section>

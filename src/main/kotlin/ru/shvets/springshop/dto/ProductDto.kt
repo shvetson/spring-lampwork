@@ -1,8 +1,9 @@
 package ru.shvets.springshop.dto
 
-import ru.shvets.springshop.entity.Product
-import ru.shvets.springshop.entity.ProductState
-import ru.shvets.springshop.entity.ProductType
+import ru.shvets.springshop.dto.ClientDto.Companion.toDto
+import ru.shvets.springshop.entity.ProductEntity
+import ru.shvets.springshop.entity.ProductTypeEntity
+import ru.shvets.springshop.model.ProductState
 import ru.shvets.springshop.util.Utils.toDate
 
 /**
@@ -12,31 +13,49 @@ import ru.shvets.springshop.util.Utils.toDate
  */
 
 data class ProductDto(
-    val id: Long,
-    val name: String,
-    val created: String,
-    val price: Int,
-    val oldPrice: Int = 0,
-    val state: ProductState,
-    val sold: String,
-    val image: String,
-    val description: String,
-    val productType: ProductType
+    var id: Long? = null,
+    var name: String? = null,
+    var created: String? = null,
+    var price: Int? = null,
+    var oldPrice: Int? = null,
+    var state: ProductState = ProductState.NEW,
+    var sold: String? = null,
+    var image: String? = null,
+    var description: String? = null,
+    var productType: ProductTypeEntity = ProductTypeEntity(),
+    var client: ClientDto? = ClientDto()
 ) {
 
+    fun toEntity(): ProductEntity {
+        return ProductEntity(
+            id = this.id,
+            name = this.name,
+            created = this.created?.toDate()?.time,
+            price = this.price,
+            oldPrice = this.oldPrice,
+            state = this.state,
+            sold = this.sold?.toDate()?.time,
+            image = this.image,
+            description = this.description,
+            productType = this.productType,
+            client = this.client?.toEntity()
+        )
+    }
+
     companion object {
-        fun Product.toDto(): ProductDto {
+        fun ProductEntity.toDto(): ProductDto {
             return ProductDto(
                 id = this.id,
                 name = this.name,
-                created = this.created.toDate(),
+                created = this.created?.toDate(),
                 price = this.price,
                 oldPrice = this.oldPrice,
                 state = this.state,
-                sold = this.sold.toDate(),
+                sold = this.sold?.toDate(),
                 image = this.image,
                 description = this.description,
-                productType = this.productType
+                productType = this.productType,
+                client = this.client?.toDto()
             )
         }
     }

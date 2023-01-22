@@ -3,7 +3,7 @@ package ru.shvets.springshop.service
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.shvets.springshop.entity.ProductType
+import ru.shvets.springshop.entity.ProductTypeEntity
 import ru.shvets.springshop.exception.TypeNotFoundException
 import ru.shvets.springshop.repository.ProductRepository
 import ru.shvets.springshop.repository.ProductTypeRepository
@@ -21,38 +21,36 @@ class ProductTypeService(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    fun getAll(): List<ProductType> {
+    fun getAll(): List<ProductTypeEntity> {
         logger.info("Find all types")
         return productTypeRepository.findAll()
     }
 
-    fun getAllCustom(listTypesId: List<Long>): List<ProductType> {
+    fun getAllCustom(listTypesId: List<Long>): List<ProductTypeEntity> {
         return productTypeRepository.findAllByIdIn(listTypesId)
     }
 
-    fun getById(id: Long): ProductType {
+    fun getById(id: Long): ProductTypeEntity {
         val type = productTypeRepository.findById(id).orElse(null) ?: throw TypeNotFoundException(id)
         logger.info("Selected type with id=$id - ${type.name}")
         return type
     }
 
-    fun getAllByOrder(): List<ProductType> {
+    fun getAllByOrder(): List<ProductTypeEntity> {
         logger.info("Find all types")
         return productTypeRepository.findAllByOrderByOrderIdAsc()
     }
 
-    fun save(productType: ProductType) {
+    fun save(productType: ProductTypeEntity) {
         productTypeRepository.save(productType)
         logger.info("Added a new type")
     }
 
-    fun create(): ProductType {
+    fun create(): ProductTypeEntity {
         val maxOrderId = productTypeRepository.maxAllByOrderId()
-        return ProductType(
-            id = 0L,
-            name = "",
+        return ProductTypeEntity().apply {
             orderId = maxOrderId + 1
-        )
+        }
     }
 
     @Transactional

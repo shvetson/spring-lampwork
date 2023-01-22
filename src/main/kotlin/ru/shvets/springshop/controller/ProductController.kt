@@ -1,15 +1,13 @@
 package ru.shvets.springshop.controller
 
+import mu.KotlinLogging
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import ru.shvets.springshop.entity.Client
-import ru.shvets.springshop.entity.Product
-import ru.shvets.springshop.entity.ProductType
-import ru.shvets.springshop.model.User
-import ru.shvets.springshop.service.ClientService
+import ru.shvets.springshop.entity.ProductEntity
+import ru.shvets.springshop.entity.ProductTypeEntity
 import ru.shvets.springshop.service.ProductService
 import ru.shvets.springshop.service.ProductTypeService
 import java.util.*
@@ -22,11 +20,11 @@ import java.util.*
 
 @Controller
 @RequestMapping("/admin")
-class AdminController(
+class ProductController(
     private val productTypeService: ProductTypeService,
     private val productService: ProductService,
-    private val clientService: ClientService
 ) {
+    private val logger = KotlinLogging.logger {}
 
     @GetMapping(*["", "/products"])
     fun showProductsList(model: Model): String {
@@ -36,13 +34,13 @@ class AdminController(
 
     @PostMapping("/products/add")
     fun addProduct(
-        @ModelAttribute product: Product,
+        @ModelAttribute product: ProductEntity,
         @RequestParam(name = "file", required = false) file: MultipartFile
     ): String {
         if (!file.isEmpty) {
             if (product.id != 0L && product.image != file.originalFilename) {
                 println("Разные файлы")
-                productService.deleteFileByProductId(product.id)
+                product.id?.let { productService.deleteFileByProductId(it) }
             }
             product.image = productService.transferFile(file)
         }
@@ -83,7 +81,7 @@ class AdminController(
     }
 
     @PostMapping("/types/add")
-    fun addProductType(productType: ProductType): String {
+    fun addProductType(productType: ProductTypeEntity): String {
         productTypeService.save(productType)
         return "redirect:/admin/types"
     }
@@ -105,25 +103,4 @@ class AdminController(
         model["productType"] = productTypeService.getById(id)
         return "typeForm"
     }
-
-    @GetMapping("/clients")
-    fun showClientsList(model: Model): String {
-        model["clients"] = clientService.getAll()
-        return "clientsList"
-    }
-
-    @GetMapping("/clients/add")
-    fun addClient(model: Model): String {
-        model["client"] = clientService.createClient()
-        model["flagEdit"] = false
-        return "clientForm"
-    }
-
-    @PostMapping("/clients/add")
-    fun addClient(@ModelAttribute client: Client): String {
-        clientService.saveClient(client)
-//        return "redirect:/admin/clients"
-        return "clientForm"
-    }
-
 }

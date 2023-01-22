@@ -12,4 +12,5 @@ import java.util.*
 object Utils {
 
     fun Long.toDate(): String = SimpleDateFormat("dd/MM/yyyy").format(Date(this))
+    fun String.toDate(): Date = SimpleDateFormat("dd/MM/yyyy").parse(this)
 }

@@ -8,9 +8,10 @@ import ru.shvets.springshop.api.response.ProductsResponse
 import ru.shvets.springshop.api.response.ProductsResponse.Companion.toResponse
 import ru.shvets.springshop.dto.ProductDto
 import ru.shvets.springshop.dto.ProductDto.Companion.toDto
-import ru.shvets.springshop.entity.Product
-import ru.shvets.springshop.entity.ProductState
-import ru.shvets.springshop.entity.ProductType
+import ru.shvets.springshop.entity.ClientEntity
+import ru.shvets.springshop.entity.ProductEntity
+import ru.shvets.springshop.model.ProductState
+import ru.shvets.springshop.entity.ProductTypeEntity
 import ru.shvets.springshop.exception.ProductNotFoundException
 import ru.shvets.springshop.repository.ProductRepository
 import ru.shvets.springshop.repository.ProductTypeRepository
@@ -51,9 +52,9 @@ class ProductService(
         }
     }
 
-    fun getAllByMap(): LinkedHashMap<ProductType, List<ProductDto>> {
+    fun getAllByMap(): LinkedHashMap<ProductTypeEntity, List<ProductDto>> {
         val listTypes = productTypeRepository.findAllByOrderByOrderIdAsc()
-        val mapProductAndType: LinkedHashMap<ProductType, List<ProductDto>> = LinkedHashMap()
+        val mapProductAndType: LinkedHashMap<ProductTypeEntity, List<ProductDto>> = LinkedHashMap()
 
         listTypes.forEach { type ->
             mapProductAndType[type] = productRepository.findAllByProductType(type).map {
@@ -70,7 +71,7 @@ class ProductService(
         saleProducts: Boolean,
         newProducts: Boolean,
         priceRangeProducts: Long
-    ): LinkedHashMap<ProductType, List<ProductDto>> {
+    ): LinkedHashMap<ProductTypeEntity, List<ProductDto>> {
         val listTypes = productTypeRepository.findAllByIdIn(listTypesId)
 
         val listState = mutableListOf<ProductState>()
@@ -90,7 +91,7 @@ class ProductService(
             listState.remove(ProductState.NEW)
         }
 
-        val mapProductAndType: LinkedHashMap<ProductType, List<ProductDto>> = LinkedHashMap()
+        val mapProductAndType: LinkedHashMap<ProductTypeEntity, List<ProductDto>> = LinkedHashMap()
 
         listTypes.forEach { type ->
             mapProductAndType[type] = productRepository.findAllByProductTypeAndStateInAndPriceLessThanEqual(
@@ -105,30 +106,25 @@ class ProductService(
         return mapProductAndType
     }
 
-    fun getById(id: Long): Product {
+    fun getById(id: Long): ProductEntity {
         val product = productRepository.findById(id).orElse(null) ?: throw ProductNotFoundException(id)
         logger.info("Выбран товар ${product.name}")
         return product
     }
 
-    fun create(): Product {
-        val types: List<ProductType> = productTypeRepository.findAll()
-        var indexNewType = types.indexOfFirst { it.name.uppercase() == "NEW" }
+    fun create(): ProductEntity {
+        val types: List<ProductTypeEntity> = productTypeRepository.findAll()
+        var indexNewType = types.indexOfFirst { it.name?.uppercase() == "NEW" }
         if (indexNewType == -1) indexNewType = 0
 
-        return Product(
-            id = 0L,
-            name = "",
-            price = 0,
-            oldPrice = 0,
-            image = "",
-            description = "",
-            productType = types[indexNewType],
-            client = null
-        )
+        val product = ProductEntity().apply {
+            productType = types[indexNewType]
+            client = ClientEntity()
+        }
+        return product
     }
 
-    fun save(product: Product) {
+    fun save(product: ProductEntity) {
         productRepository.save(product)
         logger.info("Добавлен новый || обновлен продукт - ${product.name}.")
     }

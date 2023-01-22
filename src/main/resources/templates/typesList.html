@@ -9,28 +9,10 @@
     <title>Админ. Список групп</title>
 </head>
 <body>
+<div th:replace="~{fragments :: menu2}"></div>
 
-<section>
-    <div class="container-xxl">
-        <header class="d-flex bg-light flex-wrap justify-content-center mb-4 border-bottom">
-            <a href="/home" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <svg class="bi me-2" width="40" height="32">
-                    <use xlink:href="#bootstrap"></use>
-                </svg>
-                <span class="fs-4">Администрирование</span>
-            </a>
-
-            <ul class="nav nav-pills">
-                <li class="nav-item"><a href="/home" class="nav-link px-2">Home</a></li>
-                <li class="nav-item"><a href="/admin/products" class="nav-link px-2">Продукты</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Группы</a></li>
-            </ul>
-        </header>
-    </div>
-</section>
-
-<section>
-    <div class="container-xxl">
+<div class="container-xxl">
+    <section>
         <h2>Управление типами</h2>
 
         <table class="table-responsive table-secondary table-bordered table-striped caption-top">
@@ -70,10 +52,10 @@
             <td colspan="4"><a th:href="@{/admin/types/add}" class="btn btn-sm btn-primary">Добавить</a></td>
             </tfoot>
         </table>
-    </div>
-</section>
+    </section>
+</div>
 
-</body>
 <div th:insert="~{fragments :: copyright}"></div>
 <th:block th:insert="~{fragments :: script}"></th:block>
+</body>
 </html>

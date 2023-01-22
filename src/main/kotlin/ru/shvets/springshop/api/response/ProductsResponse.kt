@@ -1,8 +1,8 @@
 package ru.shvets.springshop.api.response
 
 import ru.shvets.springshop.dto.ProductDto
-import ru.shvets.springshop.entity.ProductState
-import ru.shvets.springshop.entity.ProductType
+import ru.shvets.springshop.model.ProductState
+import ru.shvets.springshop.entity.ProductTypeEntity
 
 /**
  * @author  Oleg Shvets
@@ -12,7 +12,7 @@ import ru.shvets.springshop.entity.ProductType
 
 data class ProductsResponse (
     val id: Long?,
-    val name: String,
+    val name: String?,
     val created: String?,
     val price: Int?,
     val oldPrice: Int?,
@@ -20,7 +20,7 @@ data class ProductsResponse (
     val sold: String?,
     val image: String?,
     val description: String?,
-    val productType: ProductType?
+    val productType: ProductTypeEntity?
 ) {
         companion object {
         fun ProductDto.toResponse(): ProductsResponse {

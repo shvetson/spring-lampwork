@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:replace="~{fragments :: title}">Title</title>
+    <th:block th:insert="~{fragments :: link}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments :: menu2}"></div>
+
+<div class="container-xxl">
+    <div class="row">
+
+        <div class="col text-center">
+            <h1>Отчеты</h1>
+        </div>
+
+    </div>
+</div>
+
+<div th:insert="~{fragments :: copyright}"></div>
+<th:block th:insert="~{fragments :: script}"></th:block>
+</body>
+</html>

@@ -79,7 +79,7 @@
                     <div class="col-9">
                         <select class="form-select" id="indicationSelect" th:field="*{state}" required>
                             <option selected disabled value="">Выберите ...</option>
-                            <option th:each="state : ${T(ru.shvets.springshop.entity.ProductState).values()}"
+                            <option th:each="state : ${T(ru.shvets.springshop.model.ProductState).values()}"
                                     th:value="${state}"
                                     th:utext="${state}">
                             </option>

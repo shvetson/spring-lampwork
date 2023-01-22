@@ -10,7 +10,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "settings")
-class Settings(
+class SettingsEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,

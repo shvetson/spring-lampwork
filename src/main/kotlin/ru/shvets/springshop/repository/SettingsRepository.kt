@@ -1,7 +1,7 @@
 package ru.shvets.springshop.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository
-import ru.shvets.springshop.entity.Settings
+import ru.shvets.springshop.entity.SettingsEntity
 
-interface SettingsRepository : JpaRepository<Settings, Long> {
+interface SettingsRepository : JpaRepository<SettingsEntity, Long> {
 }

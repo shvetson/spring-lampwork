@@ -2,7 +2,7 @@ package ru.shvets.springshop.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import ru.shvets.springshop.entity.Address
+import ru.shvets.springshop.entity.AddressEntity
 
 /**
  * @author  Oleg Shvets
@@ -11,5 +11,5 @@ import ru.shvets.springshop.entity.Address
  */
 
 @Repository
-interface AddressRepository: JpaRepository<Address, Long> {
+interface AddressRepository: JpaRepository<AddressEntity, Long> {
 }

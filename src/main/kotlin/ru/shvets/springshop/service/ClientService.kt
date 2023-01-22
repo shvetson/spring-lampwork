@@ -1,10 +1,14 @@
 package ru.shvets.springshop.service
 
 import mu.KotlinLogging
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import ru.shvets.springshop.entity.Client
-import ru.shvets.springshop.entity.Product
-import ru.shvets.springshop.entity.ProductType
+import org.springframework.web.server.ResponseStatusException
+import ru.shvets.springshop.dto.AddressDto
+import ru.shvets.springshop.dto.ClientDto
+import ru.shvets.springshop.dto.ClientDto.Companion.toDto
+import ru.shvets.springshop.entity.AddressEntity
+import ru.shvets.springshop.entity.ClientEntity
 import ru.shvets.springshop.repository.AddressRepository
 import ru.shvets.springshop.repository.ClientRepository
 
@@ -14,33 +18,11 @@ import ru.shvets.springshop.repository.ClientRepository
  * @date  17.01.2023 20:49
  */
 
-@Service
-class ClientService(
-    private val clientRepository: ClientRepository,
-    private val addressRepository: AddressRepository
-) {
-    private val logger = KotlinLogging.logger {}
 
-    fun getAll(): List<Client> {
-        return clientRepository.findAll()
-    }
-
-    fun saveClient(client: Client) {
-        clientRepository.save(client)
-    }
-
-    fun createClient(): Client {
-        return Client(
-            id = 0L,
-            firstName = "",
-            lastName = "",
-            address = null,
-            email = "",
-            phone = "",
-            telegram = "",
-            whatsApp = "",
-            description = "",
-            shoppingList = null
-        )
-    }
+interface ClientService {
+    fun getAllClients(): List<ClientDto>
+    fun getClientById(id: Long): ClientDto
+    fun createClient(): ClientDto
+    fun saveClient(client: ClientDto)
+    fun deleteClient(id: Long)
 }

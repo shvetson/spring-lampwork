@@ -15,7 +15,7 @@
 
     <section class="title row">
         <div class="col text-start">
-            <div th:switch="${flagEdit}">
+            <div class="title-page text-primary" th:switch="${flagEdit}">
                 <h2 th:case="true">Редактирование данных о клиенте</h2>
                 <h2 th:case="false">Добавление данных о новом клиенте</h2>
             </div>
@@ -23,98 +23,229 @@
     </section>
 
     <section class="form-enter row">
-        <div class="col-6">
-            <form th:action="@{/admin/clients/add}" enctype="multipart/form-data" th:object="${client}"
-                  th:method="POST">
-                <input type="text" th:field="*{id}" hidden/>
+        <form th:action="@{/admin/clients/add}" th:object="${client}" th:method="POST">
+            <div class="form-group row">
+                <div class="col-5">
+                    <input th:field="*{id}" hidden/>
 
-                <div class="row mb-3">
-                    <label for="firstNameInput" class="col-3 col-form-label">Имя</label>
-                    <div class="col-9">
-                        <input type="text" class="form-control" id="firstNameInput" placeholder="Имя клиента"
-                               th:field="*{firstName}" required>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="lastNameInput" class="col-3 col-form-label">Фамилия</label>
-                    <div class="col-9">
-                        <input type="text" class="form-control" id="lastNameInput" placeholder="Фамилия клиента"
-                               th:field="*{lastName}" required>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="emailInput" class="col-3 col-form-label">Электронная почта</label>
-                    <div class="col-9">
-                        <input type="email" class="form-control" id="emailInput" placeholder="Электронная почта"
-                               pattern="^([^ ]+@[^ ]+\.[a-z]{2,6}|)$"
-                               th:field="*{email}" required>
-                        <small>Формат: name@mail.com</small>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="phoneInput" class="col-3 col-form-label">Номер телефона</label>
-                    <div class="col-9">
-                        <input type="tel" class="form-control" id="phoneInput" placeholder="+7(___) ___-__-__"
-                               value="+7(___) ___-__-__"
-                               pattern="\+7[\(]{0,1}9[0-9]{2}[\)]\s\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
-                               th:field="*{phone}" required>
-                        <small>Формат: +7(XXX) XXX-XX-XX</small>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="telegramInput" class="col-3 col-form-label">Telegram</label>
-                    <div class="col-9">
-                        <input type="text" class="form-control" id="telegramInput" placeholder="Telegram"
-                               pattern="&#64;[a-zA-Z]+$"
-                               th:field="*{telegram}">
-                        <small>Формат: @NikName</small>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="whatsappInput" class="col-3 col-form-label">WhatsApp</label>
-                    <div class="col-9">
-                        <input type="tel" class="form-control" id="whatsappInput" placeholder="WhatsApp"
-                               th:field="*{whatsApp}">
-                    </div>
-                </div>
-
-                <div class="row mb-3 justify-content-between">
-                    <label for="descriptionInput" class="col-3 col-form-label">Комментарии</label>
-                    <div class="col-9">
-                    <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Комментарии"
-                              th:field="*{description}"></textarea>
-                    </div>
-                </div>
-
-                <th:block th:if="${flagEdit}">
                     <div class="row mb-3">
-                        <label for="dataCreatedInput" class="col-3 col-form-label">Дата регистрации</label>
-                        <div class="col-9">
-                            <input type="datetime-local" class="form-control" id="dataCreatedInput"
-                                   placeholder="Дата регистрации" min="0" th:field="*{created}">
+                        <label for="firstName" class="col-4 col-form-label fw-semibold">Имя</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="firstName" placeholder="Имя клиента"
+                                   th:field="*{firstName}" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <label for="dataUpdatedInput" class="col-3 col-form-label">Дата обновления</label>
-                        <div class="col-9">
-                            <input type="date" class="form-control" id="dataUpdatedInput"
-                                   placeholder="Дата обновления" min="0" th:field="*{updated}">
+                        <label for="lastName" class="col-4 col-form-label fw-semibold">Фамилия</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="lastName" placeholder="Фамилия клиента"
+                                   th:field="*{lastName}" required>
                         </div>
                     </div>
-                </th:block>
 
-                <div class="col-12">
-                    <button class="btn btn-sm btn-primary" type="submit">Сохранить</button>
+                    <div class="row mb-3">
+                        <label for="email" class="col-4 col-form-label fw-semibold">Электронная почта</label>
+                        <div class="col-8">
+                            <input type="email" class="form-control" id="email" placeholder="Электронная почта"
+                                   pattern="^([^ ]+@[^ ]+\.[a-z]{2,6}|)$"
+                                   th:field="*{email}" required
+                                   aria-describedby="emailHelpBlock">
+                            <small id="emailHelpBlock" class="form-text text-muted">
+                                Формат: name@mail.com
+                            </small>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="phone" class="col-4 col-form-label fw-semibold">Номер телефона</label>
+                        <div class="col-8">
+                            <input type="tel" class="form-control" id="phone" placeholder="+7(___) ___-__-__"
+                                   value="+7(___) ___-__-__"
+                                   pattern="\+7[\(]{0,1}9[0-9]{2}[\)]\s\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+                                   th:field="*{phone}" required
+                                   aria-describedby="phoneHelpBlock">
+                            <small id="phoneHelpBlock" class="form-text text-muted">
+                                Формат: +7(XXX) XXX-XX-XX
+                            </small>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="telegram" class="col-4 col-form-label fw-semibold">Telegram</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="telegram" placeholder="Telegram"
+                                   pattern="&#64;[a-zA-Z]+$"
+                                   th:field="*{telegram}"
+                                   aria-describedby="telegramHelpBlock">
+                            <small id="telegramHelpBlock" class="form-text text-muted">
+                                Формат: @NikName
+                            </small>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="whatsapp" class="col-4 col-form-label fw-semibold">WhatsApp</label>
+                        <div class="col-8">
+                            <input type="tel" class="form-control" id="whatsapp"
+                                   placeholder="WhatsApp"
+                                   th:field="*{whatsApp}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 justify-content-between">
+                        <label for="descriptionInput" class="col-4 col-form-label fw-semibold">Комментарии</label>
+                        <div class="col-8">
+                            <textarea class="form-control rounded-2 fw-normal text-start" id="descriptionInput" rows="3"
+                                      placeholder="Комментарии"
+                                      th:field="*{description}"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3" th:if="${flagEdit}">
+                        <label for="dataCreated" class="col-4 col-form-label fw-semibold">Дата регистрации</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="dataCreated"
+                                   placeholder="Дата регистрации"
+                                   th:value="*{created}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3" th:if="${flagEdit}">
+                        <label for="dataUpdated" class="col-4 col-form-label fw-semibold">Дата обновления</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="dataUpdated"
+                                   placeholder="Дата обновления"
+                                   th:value="*{updated}" readonly>
+                        </div>
+                    </div>
+
                 </div>
 
-            </form>
-        </div>
+                <!--        Адресс-->
+                <div class="col-7">
+                    <input th:field="*{address.id}" hidden/>
+
+                    <div class="row mb-3">
+                        <label for="code" class="col-2 col-form-label fw-semibold ps-5">Индекс</label>
+                        <div class="col-2">
+                            <input type="text" class="form-control" id="code"
+                                   placeholder="Индекс"
+                                   maxlength="6"
+                                   th:field="*{address.code}"/>
+                        </div>
+
+                        <label for="region" class="col-3 col-form-label fw-semibold text-end">Область</label>
+                        <div class="col-5">
+                            <input type="text" class="form-control" id="region"
+                                   placeholder="Область"
+                                   th:field="*{address.region}" required/>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="city" class="col-2 col-form-label fw-semibold ps-5">Город</label>
+                        <div class="col-3">
+                            <input type="text" class="form-control" id="city"
+                                   placeholder="Город"
+                                   th:field="*{address.city}" required/>
+                        </div>
+
+                        <label for="area" class="col-2 col-form-label fw-semibold text-end">Район</label>
+                        <div class="col-5">
+                            <input type="text" class="form-control" id="area"
+                                   placeholder="Район"
+                                   th:field="*{address.area}"/>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="street" class="col-2 col-form-label fw-semibold ps-5">Улица</label>
+                        <div class="col-10">
+                            <input type="text" class="form-control" id="street"
+                                   placeholder="Улица"
+                                   th:field="*{address.street}" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-5">
+                        <label for="building" class="col-2 col-form-label fw-semibold ps-5">Дом</label>
+                        <div class="col-2">
+                            <input type="text" class="form-control" id="building"
+                                   placeholder="Дом"
+                                   th:field="*{address.building}" required>
+                        </div>
+
+                        <label for="housing" class="col-2 col-form-label fw-semibold text-end">Корпус</label>
+                        <div class="col-2">
+                            <input type="text" class="form-control" id="housing"
+                                   placeholder="Корпус"
+                                   th:field="*{address.housing}">
+                        </div>
+
+                        <label for="flat" class="col-2 col-form-label fw-semibold text-end">Квартира</label>
+                        <div class="col-2">
+                            <input type="number" class="form-control" id="flat" min="0" step="any" maxlength="3"
+                                   placeholder="Квартира"
+                                   th:field="*{address.flat}" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2 ps-5 pe-2" th:if="${flagEdit}">
+                        <hr>
+                    </div>
+
+                    <div class="table-responsive ps-4" th:if="${flagEdit}">
+                        <table class="table table-sm table-light table-striped table-bordered caption-top">
+                            <caption>Список покупок</caption>
+                            <thead class="table-light text-center px-5">
+                            <th scope="col">#</th>
+                            <th scope="col" style="width: auto; ">Группа</th>
+                            <th scope="col" style="width: auto; ">Товар</th>
+                            <th scope="col" style="width: auto; ">Количество</th>
+                            <th scope="col" style="width: auto; ">Сумма</th>
+                            <th scope="col" style="width: auto; ">Дата</th>
+                            </thead>
+
+                            <tbody class="table-group-divider text-start px-5">
+                            <tr th:if="${shopping.isEmpty()}">
+                                <td colspan="6" style="text-align: center; ">Нет данных о покупках</td>
+                            </tr>
+                            <div th:each="shopItem, iterStat : ${shopping}">
+                                <tr style="text-align: center">
+                                    <td th:text="${iterStat.index + 1}"></td>
+                                    <td th:text="${shopItem.productType.name}"></td>
+                                    <td th:text="${shopItem.name}"></td>
+                                    <td th:text="${1}"></td>
+                                    <td th:text="${shopItem.price}"></td>
+                                    <td th:text="${shopItem.sold}"></td>
+                                </tr>
+                            </div>
+                            </tbody>
+
+                            <tfoot>
+
+                            <td colspan="6">Итого: <span th:text="${total}">Total</span></td>
+                            </tfoot>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 mt-3">
+                <button class="btn btn-sm btn-primary" type="submit">Сохранить</button>
+                <a th:href="@{/admin/clients}" class="btn btn-sm btn-secondary">Отмена</a>
+            </div>
+
+        </form>
+
     </section>
 </div>
 

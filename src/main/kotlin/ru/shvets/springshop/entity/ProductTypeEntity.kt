@@ -12,24 +12,33 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "product_type")
-data class ProductType(
+class ProductTypeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
-    @Column(name = "name")
-    val name: String,
-    @Column(name = "order_id")
-    val orderId: Int,
+    var id: Long? = null
+
+    @Column(name = "name", nullable = false)
+    var name: String? = null
+
+    @Column(name = "order_id", nullable = false)
+    var orderId: Int? = null
 
     @OneToMany(mappedBy = "productType", fetch = FetchType.EAGER)
     @JsonBackReference
-    val products: MutableList<Product> = mutableListOf()
-) {
+    var products: MutableList<ProductEntity> = mutableListOf()
+
+    constructor()
+    constructor(id: Long?, name: String?, orderId: Int?, products: MutableList<ProductEntity>) {
+        this.id = id
+        this.name = name
+        this.orderId = orderId
+        this.products = products
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
-        other as ProductType
+        other as ProductTypeEntity
 
         return id == other.id
     }
@@ -38,6 +47,6 @@ data class ProductType(
 
     @Override
     override fun toString(): String {
-        return this::class.simpleName + "(id = $id, name = $name  )"
+        return this::class.simpleName + "(id = $id, name = $name)"
     }
 }
