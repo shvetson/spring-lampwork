@@ -27,7 +27,7 @@ class FileUploadController {
 
     @GetMapping
     fun listUploadedFiles(model: Model): String {
-        return "uploadForm"
+        return "/products/uploadForm"
     }
 
     @PostMapping

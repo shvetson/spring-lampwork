@@ -71,7 +71,12 @@
             </div>
             </tbody>
             <tfoot>
-            <td colspan="11"><a th:href="@{/admin/products/add}" class="btn btn-sm btn-primary">Добавить</a></td>
+            <td colspan="11">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a th:href="@{/admin/products/add}"
+                       class="btn btn-sm btn-primary justify-content-md-end">Добавить</a>
+                </div>
+            </td>
             </tfoot>
         </table>
     </section>

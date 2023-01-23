@@ -23,7 +23,8 @@ data class ProductDto(
     var image: String? = null,
     var description: String? = null,
     var productType: ProductTypeEntity = ProductTypeEntity(),
-    var client: ClientDto? = ClientDto()
+    var client: ClientDto? = null,
+    var enabled: Boolean? = true
 ) {
 
     fun toEntity(): ProductEntity {
@@ -38,7 +39,8 @@ data class ProductDto(
             image = this.image,
             description = this.description,
             productType = this.productType,
-            client = this.client?.toEntity()
+            client = this.client?.toEntity(),
+            enabled = this.enabled
         )
     }
 
@@ -51,11 +53,12 @@ data class ProductDto(
                 price = this.price,
                 oldPrice = this.oldPrice,
                 state = this.state,
-                sold = this.sold?.toDate(),
+                sold = if (this.sold != 0L) this.sold?.toDate() else "",
                 image = this.image,
                 description = this.description,
                 productType = this.productType,
-                client = this.client?.toDto()
+                client = this.client?.toDto(),
+                enabled = this.enabled
             )
         }
     }

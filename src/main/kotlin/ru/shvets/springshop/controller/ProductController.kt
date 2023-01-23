@@ -29,7 +29,7 @@ class ProductController(
     @GetMapping(*["", "/products"])
     fun showProductsList(model: Model): String {
         model["products"] = productService.getAll()
-        return "productsList"
+        return "/products/productsList"
     }
 
     @PostMapping("/products/add")
@@ -47,7 +47,6 @@ class ProductController(
 
         productService.save(product)
         return "redirect:/admin/products"
-//        return "productForm"
     }
 
     @GetMapping("/products/add")
@@ -55,7 +54,7 @@ class ProductController(
         model["types"] = productTypeService.getAll()
         model["product"] = productService.create()
         model["flagEdit"] = false
-        return "productForm"
+        return "/products/productForm"
     }
 
     @GetMapping("/products/delete/{id}")
@@ -71,13 +70,13 @@ class ProductController(
         model["types"] = productTypeService.getAll()
         model["product"] = productService.getById(id)
         model["flagEdit"] = true
-        return "productForm"
+        return "/products/productForm"
     }
 
     @GetMapping("/types")
     fun showProductTypesList(model: Model): String {
         model["types"] = productTypeService.getAll()
-        return "typesList"
+        return "/products/typesList"
     }
 
     @PostMapping("/types/add")
@@ -89,7 +88,7 @@ class ProductController(
     @GetMapping("/types/add")
     fun addProductType(model: Model): String {
         model["productType"] = productTypeService.create()
-        return "typeForm"
+        return "/products/typeForm"
     }
 
     @GetMapping("/types/delete/{id}")
@@ -101,6 +100,6 @@ class ProductController(
     @GetMapping("/types/edit/{id}")
     fun editProductType(@PathVariable("id") id: Long, model: Model): String {
         model["productType"] = productTypeService.getById(id)
-        return "typeForm"
+        return "/products/typeForm"
     }
 }

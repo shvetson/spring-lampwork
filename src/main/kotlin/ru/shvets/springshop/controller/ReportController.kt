@@ -17,6 +17,6 @@ class ReportController {
 
     @GetMapping
     fun main(model: Model): String {
-        return "reports"
+        return "/reports/reports"
     }
 }

@@ -53,7 +53,10 @@ class ProductEntity{
 
     @ManyToOne(optional = true, cascade = [CascadeType.ALL])
     @JoinColumn(name = "client_id", nullable = false)
-    var client: ClientEntity? = ClientEntity()
+    var client: ClientEntity? = null
+
+    @Column(name = "enabled", nullable = false)
+    var enabled: Boolean? = true
 
     constructor()
     constructor(
@@ -67,7 +70,8 @@ class ProductEntity{
         image: String?,
         description: String?,
         productType: ProductTypeEntity,
-        client: ClientEntity?
+        client: ClientEntity?,
+        enabled: Boolean?
     ) {
         this.id = id
         this.name = name
@@ -80,6 +84,7 @@ class ProductEntity{
         this.description = description
         this.productType = productType
         this.client = client
+        this.enabled = enabled
     }
 
 

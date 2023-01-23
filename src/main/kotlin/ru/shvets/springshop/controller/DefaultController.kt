@@ -40,7 +40,7 @@ class DefaultController(
         model["types"] = productTypeService.getAll()
         model["minPrice"] = productService.minPrice()
         model["maxPrice"] = productService.maxPrice()
-        return "products"
+        return "/products/products"
     }
 
     @PostMapping("/gallery/filter")
@@ -62,12 +62,12 @@ class DefaultController(
         model["saleProd"] = saleProducts
         model["newProd"] = newProducts
         model["priceProd"] = priceRangeProducts
-        return "products"
+        return "/products/products"
     }
 
     @GetMapping("/products/{id}")
     fun products(@PathVariable("id") id: Long, model: Model): String {
         model["product"] = productService.getById(id)
-        return "product"
+        return "/products/product"
     }
 }

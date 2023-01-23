@@ -17,6 +17,6 @@ class OrdersController {
 
     @GetMapping
     fun main(model: Model): String {
-        return "orders"
+        return "/orders/orders"
     }
 }

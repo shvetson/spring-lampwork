@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
-import ru.shvets.springshop.dto.AddressDto
 import ru.shvets.springshop.dto.ClientDto
 import ru.shvets.springshop.dto.ProductDto
 import ru.shvets.springshop.service.ClientService
@@ -27,7 +26,7 @@ class ClientController(
     @GetMapping("/clients")
     fun showClientsList(model: Model): String {
         model["clients"] = clientService.getAllClients()
-        return "clientsList"
+        return "/clients/clientsList"
     }
 
     @GetMapping("/clients/add")
@@ -35,7 +34,7 @@ class ClientController(
         val client = clientService.createClient()
         model["client"] = client
         model["flagEdit"] = false
-        return "clientForm"
+        return "/clients/clientForm"
     }
 
     @PostMapping("/clients/add")
@@ -53,7 +52,7 @@ class ClientController(
         model["shopping"] = shoppingList
         model["total"] = total
         model["flagEdit"] = true
-        return "clientForm"
+        return "/clients/clientForm"
     }
 
     @GetMapping("/clients/delete/{id}")

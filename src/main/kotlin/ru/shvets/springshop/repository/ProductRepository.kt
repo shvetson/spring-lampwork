@@ -20,10 +20,8 @@ interface ProductRepository: JpaRepository<ProductEntity, Long> {
     fun findAllByProductType(productType: ProductTypeEntity): List<ProductEntity>
     fun findAllByProductTypeAndStateInAndPriceLessThanEqual(productType: ProductTypeEntity, listState: List<ProductState>, price: Int): List<ProductEntity>
     fun deleteAllByProductType(productType: ProductTypeEntity)
-
     @Query(nativeQuery = true, value = "select max(price) from products")
     fun maxPrice(): Float
-
     @Query(nativeQuery = true, value = "select min(price) from products")
     fun minPrice(): Float
 }
