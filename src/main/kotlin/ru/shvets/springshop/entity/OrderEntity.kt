@@ -1,12 +1,13 @@
 package ru.shvets.springshop.entity
 
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "orders")
 class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id", nullable = false)
     var id: Long? = null
 
@@ -19,4 +20,9 @@ class OrderEntity {
 
     @Column(name = "date_deadline", nullable = false)
     var deadline: Long? = null
+
+    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var detailsList: MutableList<DetailsEntity> = mutableListOf()
+
+
 }

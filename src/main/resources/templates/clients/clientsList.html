@@ -44,13 +44,8 @@
                         style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
                     <td th:text="${client.whatsApp}"
                         style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${client.created}"
+                    <td th:text="${#dates.format(client.created, 'dd/MM/yyyy - HH:mm')}"
                         style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-
-                    <!--                    <td><a th:href="@{'/products/edit/' + ${product.id}}"-->
-                    <!--                           class="btn btn-sm btn-secondary">Редактировать</a></td>-->
-                    <!--                    <td><a th:href="@{'/products/delete/' + ${product.id}}" class="btn btn-sm btn-secondary">Удалить</a>-->
-                    <!--                    </td>-->
                     <td>
                         <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">

@@ -45,13 +45,16 @@ class ClientController(
 
     @GetMapping("/clients/edit/{id}")
     fun editClient(@PathVariable("id") id: Long, model: Model): String {
-        val shoppingList: List<ProductDto> = emptyList()
-        val total = shoppingList.map(ProductDto::price).sumOf { it?.toLong() ?: 0 }
         val client = clientService.getClientById(id)
+        val shopping: List<ProductDto> = emptyList()
+//        val shopping: List<ProductDto> = client.shopping ?: emptyList()
+        val total = shopping.map(ProductDto::price).sumOf { it?.toLong() ?: 0 }
+
         model["client"] = client
-        model["shopping"] = shoppingList
+        model["shopping"] = shopping
         model["total"] = total
         model["flagEdit"] = true
+
         return "/clients/clientForm"
     }
 

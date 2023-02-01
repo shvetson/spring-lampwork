@@ -1,8 +1,8 @@
 package ru.shvets.springshop.entity
 
 import com.fasterxml.jackson.annotation.JsonBackReference
-import org.hibernate.Hibernate
-import javax.persistence.*
+import jakarta.persistence.*
+
 
 /**
  * @author  Oleg Shvets
@@ -33,20 +33,5 @@ class ProductTypeEntity{
         this.name = name
         this.orderId = orderId
         this.products = products
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
-        other as ProductTypeEntity
-
-        return id == other.id
-    }
-
-    override fun hashCode(): Int = javaClass.hashCode()
-
-    @Override
-    override fun toString(): String {
-        return this::class.simpleName + "(id = $id, name = $name)"
     }
 }

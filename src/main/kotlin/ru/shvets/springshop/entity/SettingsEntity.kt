@@ -1,6 +1,7 @@
 package ru.shvets.springshop.entity
 
-import javax.persistence.*
+import jakarta.persistence.*
+
 
 /**
  * @author  Oleg Shvets

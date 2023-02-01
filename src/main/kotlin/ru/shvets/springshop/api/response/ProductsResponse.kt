@@ -3,6 +3,7 @@ package ru.shvets.springshop.api.response
 import ru.shvets.springshop.dto.ProductDto
 import ru.shvets.springshop.model.ProductState
 import ru.shvets.springshop.entity.ProductTypeEntity
+import ru.shvets.springshop.util.Utils.toDate
 
 /**
  * @author  Oleg Shvets
@@ -27,11 +28,11 @@ data class ProductsResponse (
             return ProductsResponse(
                 id = this.id,
                 name = this.name,
-                created = this.created,
+                created = this.created?.toDate(),
                 price = this.price,
                 oldPrice = this.oldPrice,
                 state = this.state,
-                sold = this.sold,
+                sold = this.sold?.toDate(),
                 image = this.image,
                 description = this.description,
                 productType = this.productType

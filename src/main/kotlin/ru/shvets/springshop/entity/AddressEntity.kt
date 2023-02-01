@@ -1,6 +1,7 @@
 package ru.shvets.springshop.entity
 
-import javax.persistence.*
+import jakarta.persistence.*
+import org.hibernate.Hibernate
 
 /**
  * @author  Oleg Shvets
@@ -15,16 +16,16 @@ class AddressEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", nullable = true)
     var code: String? = null
 
     @Column(name = "city", nullable = false)
     var city: String? = null
 
-    @Column(name = "region", nullable = false)
+    @Column(name = "region", nullable = true)
     var region: String? = null
 
-    @Column(name = "area", nullable = false)
+    @Column(name = "area", nullable = true)
     var area: String? = null
 
     @Column(name = "street", nullable = false)
@@ -33,14 +34,11 @@ class AddressEntity {
     @Column(name = "building", nullable = false)
     var building: String? = null
 
-    @Column(name = "housing", nullable = false)
+    @Column(name = "housing", nullable = true)
     var housing: String? = null
 
     @Column(name = "flat", nullable = false)
     var flat: Int? = null
-
-//    @OneToOne(optional = false, mappedBy = "address")
-//    val client: ClientEntity = ClientEntity()
 
     constructor()
     constructor(
@@ -63,5 +61,20 @@ class AddressEntity {
         this.building = building
         this.housing = housing
         this.flat = flat
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
+        other as AddressEntity
+
+        return id != null && id == other.id
+    }
+
+    override fun hashCode(): Int = javaClass.hashCode()
+
+    @Override
+    override fun toString(): String {
+        return this::class.simpleName + "(id = $id , city = $city )"
     }
 }

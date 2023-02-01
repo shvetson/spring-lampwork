@@ -22,7 +22,6 @@ class ProductTypeService(
     private val logger = KotlinLogging.logger {}
 
     fun getAll(): List<ProductTypeEntity> {
-        logger.info("Find all types")
         return productTypeRepository.findAll()
     }
 
@@ -37,7 +36,6 @@ class ProductTypeService(
     }
 
     fun getAllByOrder(): List<ProductTypeEntity> {
-        logger.info("Find all types")
         return productTypeRepository.findAllByOrderByOrderIdAsc()
     }
 

@@ -67,7 +67,7 @@ class DefaultController(
 
     @GetMapping("/products/{id}")
     fun products(@PathVariable("id") id: Long, model: Model): String {
-        model["product"] = productService.getById(id)
+        model["product"] = productService.getProductById(id)
         return "/products/product"
     }
 }

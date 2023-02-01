@@ -14,48 +14,37 @@
 <div class="container-xxl">
     <section>
         <h2>Управление товарами</h2>
-
         <table class="table-responsive table-secondary table-bordered table-striped caption-top">
             <caption>Список товаров</caption>
-            <thead style="text-align: center;">
-            <th scope="col" style="padding-left: 10px; padding-right: 10px;">#</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Название товара</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Группа</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Старая цена</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Текущая цена</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Статус</th>
-            <!--            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">HOT</th>-->
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Создан</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px;">Продан</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px">Имя файла</th>
-            <th scope="col" style="width: auto; padding-left: 10px; padding-right: 10px">Действия</th>
+            <thead class="table-light text-center align-top">
+            <th class="text-dark px-2" scope="col">#</th>
+            <th class="text-dark px-2" scope="col">Название товара</th>
+            <th class="text-dark px-2" scope="col">Группа</th>
+            <th class="text-dark px-2" scope="col">Старая цена</th>
+            <th class="text-dark px-2" scope="col">Текущая цена</th>
+            <th class="text-dark px-2" scope="col">Статус</th>
+            <th class="text-dark px-2" scope="col">Создан</th>
+            <th class="text-dark px-2" scope="col">Продан</th>
+            <th class="text-dark px-2" scope="col">Покупатель</th>
+            <th class="text-dark px-2" scope="col">Действия</th>
             </thead>
             <tbody>
             <div th:each="product, iterStat : ${products}">
-                <tr style="text-align: center">
-                    <td th:text="${iterStat.index + 1}"></td>
-                    <td th:text="${product.name}"
-                        style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.productType.name}"
-                        style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.oldPrice}"
-                        style="text-align: center; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.price}"
-                        style="text-align: center; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.state}"
-                        style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <!--                    <td th:text="${product.hotProduct}" style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>-->
-                    <td th:text="${product.created}"
-                        style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.sold}"
-                        style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <td th:text="${product.image}"
-                        style="text-align: start; padding-left: 10px; padding-right: 10px;"></td>
-                    <!--                    <td><a th:href="@{'/products/edit/' + ${product.id}}"-->
-                    <!--                           class="btn btn-sm btn-secondary">Редактировать</a></td>-->
-                    <!--                    <td><a th:href="@{'/products/delete/' + ${product.id}}" class="btn btn-sm btn-secondary">Удалить</a>-->
-                    <!--                    </td>-->
-                    <td>
+                <tr class="align-middle">
+                    <td class="text-center px-2" th:text="${iterStat.index + 1}"></td>
+                    <td class="text-start px-2 text-nowrap"><a th:href="@{'/admin/products/edit/' + ${product.id}}" th:text="${product.name}">Product</a></td>
+                    <td class="text-start px-2 text-nowrap" th:text="${product.productType.name}"></td>
+                    <td class="text-center px-2" th:text="${#numbers.formatDecimal(product.oldPrice, 0, 'COMMA', 0,'POINT')}"></td>
+                    <td class="text-center px-2" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0,'POINT')}"></td>
+                    <td class="text-center px-2" th:text="${product.state}"></td>
+                    <td class="text-center px-2" th:text="${#dates.format(product.created, 'dd/MM/yyyy - HH:mm')}"></td>
+                    <td class="text-center px-2" th:text="${product.sold ne 0} ? ${#dates.format(product.sold, 'dd/MM/yyyy')} : ''"></td>
+                    <td class="text-start px-2">
+                        <div th:each="item : ${product.client}">
+                            <span th:text="*{item.firstName + ' ' + item.lastName}"></span>
+                        </div>
+                    </td>
+                    <td class="text-center">
                         <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                 <i class="bx bx-dots-vertical-rounded"></i></button>
@@ -71,7 +60,7 @@
             </div>
             </tbody>
             <tfoot>
-            <td colspan="11">
+            <td colspan="10">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a th:href="@{/admin/products/add}"
                        class="btn btn-sm btn-primary justify-content-md-end">Добавить</a>

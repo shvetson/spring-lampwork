@@ -2,16 +2,20 @@ package ru.shvets.springshop.service.impl
 
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.server.ResponseStatusException
 import ru.shvets.springshop.api.response.ProductsResponse
 import ru.shvets.springshop.api.response.ProductsResponse.Companion.toResponse
 import ru.shvets.springshop.dto.ProductDto
-import ru.shvets.springshop.dto.ProductDto.Companion.toDto
-import ru.shvets.springshop.entity.ProductEntity
-import ru.shvets.springshop.model.ProductState
 import ru.shvets.springshop.entity.ProductTypeEntity
-import ru.shvets.springshop.exception.ProductNotFoundException
+import ru.shvets.springshop.mapper.ClientMapper.Companion.toDto
+import ru.shvets.springshop.mapper.ProductMapper.Companion.toDto
+import ru.shvets.springshop.mapper.ProductMapper.Companion.toEntity
+import ru.shvets.springshop.model.ProductState
+import ru.shvets.springshop.repository.ClientRepository
 import ru.shvets.springshop.repository.ProductRepository
 import ru.shvets.springshop.repository.ProductTypeRepository
 import ru.shvets.springshop.service.ProductService
@@ -31,8 +35,10 @@ import kotlin.math.roundToInt
 @Service
 class ProductServiceImpl(
     private val productTypeRepository: ProductTypeRepository,
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val clientRepository: ClientRepository
 ) : ProductService {
+
     private val logger = KotlinLogging.logger {}
 
     @Value("\${upload.path}")
@@ -40,16 +46,12 @@ class ProductServiceImpl(
 
     override fun getAll(): List<ProductDto> {
         logger.info("Сформирован список всех продуктов.")
-        return productRepository.findAllByOrderById().map {
-            it.toDto()
-        }
+        return productRepository.findAllByOrderById().map{it.toDto() }
     }
 
     override fun getAllApi(): List<ProductsResponse> {
         logger.info("Список всех товаров выгружен через API.")
-        return getAll().map {
-            it.toResponse()
-        }
+        return getAll().map { it.toResponse() }
     }
 
     override fun getAllByMap(): LinkedHashMap<ProductTypeEntity, List<ProductDto>> {
@@ -57,9 +59,7 @@ class ProductServiceImpl(
         val mapProductAndType: LinkedHashMap<ProductTypeEntity, List<ProductDto>> = LinkedHashMap()
 
         listTypes.forEach { type ->
-            mapProductAndType[type] = productRepository.findAllByProductType(type).map {
-                it.toDto()
-            }
+            mapProductAndType[type] = productRepository.findAllByProductType(type).map { it.toDto() }
         }
         logger.info("Сформирован список всех продуктов в разрезе по видам.")
         return mapProductAndType
@@ -93,7 +93,7 @@ class ProductServiceImpl(
 
         val mapProductAndType: LinkedHashMap<ProductTypeEntity, List<ProductDto>> = LinkedHashMap()
 
-        listTypes.forEach { type ->
+        listTypes.filter { it.products.isNotEmpty() }.forEach { type ->
             mapProductAndType[type] = productRepository.findAllByProductTypeAndStateInAndPriceLessThanEqual(
                 type,
                 listState,
@@ -106,29 +106,34 @@ class ProductServiceImpl(
         return mapProductAndType
     }
 
-    override fun getById(id: Long): ProductEntity {
-        val product = productRepository.findById(id).orElse(null) ?: throw ProductNotFoundException(id)
-        logger.info("Выбран товар ${product.name}")
-        return product
+    //    @Transactional
+    override fun getProductById(id: Long): ProductDto {
+        return productRepository.findById(id).get().toDto()
     }
 
-    override fun create(): ProductEntity {
-        return ProductEntity()
+    override fun getById(id: Long): ProductDto? {
+        return productRepository.findByIdOrNull(id)?.toDto()
     }
 
-    override fun save(product: ProductEntity) {
-        productRepository.save(product)
-        logger.info("Добавлен новый || обновлен продукт - ${product.name}.")
+    override fun create(): ProductDto {
+        return ProductDto()
+    }
+
+    override fun save(productDto: ProductDto) {
+        val clientEntity = productDto.client?.id?.let { clientRepository.findById(it).get() }
+        productDto.apply { client = clientEntity?.toDto() }
+        productRepository.save(productDto.toEntity())
+        logger.info("Добавлен новый || обновлен продукт - ${productDto.name}.")
     }
 
     override fun delete(id: Long) {
-        val product = productRepository.findById(id).orElse(null) ?: throw ProductNotFoundException(id)
-        productRepository.delete(product)
+        if (productRepository.existsById(id)) productRepository.deleteById(id)
+        else throw ResponseStatusException(HttpStatus.NOT_FOUND)
         logger.info("Данные о продукте удалены.")
     }
 
     override fun deleteFileByProductId(id: Long): Boolean {
-        val product = getById(id)
+        val product = getProductById(id)
         val filename = product.image
         val path = Paths.get("$uploadPath/$filename")
 
@@ -163,13 +168,9 @@ class ProductServiceImpl(
         return resultFileName
     }
 
-    override fun maxPrice(): Int {
-        return productRepository.maxPrice().roundToInt()
-    }
+    override fun maxPrice(): Int = productRepository.maxPrice().roundToInt()
 
-    override fun minPrice(): Int {
-        return productRepository.minPrice().roundToInt()
-    }
+    override fun minPrice(): Int = productRepository.minPrice().roundToInt()
 
     private fun getFileExtension(file: MultipartFile): String {
         val fileName = file.originalFilename

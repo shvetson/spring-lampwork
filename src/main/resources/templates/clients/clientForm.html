@@ -112,7 +112,7 @@
                         <div class="col-8">
                             <input type="text" class="form-control" id="dataCreated"
                                    placeholder="Дата регистрации"
-                                   th:value="*{created}" readonly>
+                                   th:value="*{#dates.format(created, 'dd/MM/yyyy - HH:mm')}" readonly>
                         </div>
                     </div>
 
@@ -121,7 +121,7 @@
                         <div class="col-8">
                             <input type="text" class="form-control" id="dataUpdated"
                                    placeholder="Дата обновления"
-                                   th:value="*{updated}" readonly>
+                                   th:value="*{#dates.format(updated, 'dd/MM/yyyy - HH:mm')}" readonly>
                         </div>
                     </div>
 

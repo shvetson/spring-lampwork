@@ -1,11 +1,10 @@
 package ru.shvets.springshop.entity
 
 import com.fasterxml.jackson.annotation.JsonManagedReference
+import jakarta.persistence.*
 import org.hibernate.Hibernate
-import org.hibernate.annotations.Type
 import ru.shvets.springshop.model.ProductState
 import java.util.*
-import javax.persistence.*
 
 /**
  * @author  Oleg Shvets
@@ -15,7 +14,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "products")
-class ProductEntity{
+class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -24,39 +23,38 @@ class ProductEntity{
     var name: String? = null
 
     @Column(name = "date_created", updatable = false, nullable = false)
-    var created: Long? = Date().time
+    var created: Long? = null
 
     @Column(name = "price", nullable = false)
     var price: Int? = null
 
     @Column(name = "old_price", nullable = false)
-    var oldPrice: Int? = 0
+    var oldPrice: Int? = null
 
     @Column(name = "state", nullable = false)
     @Enumerated(EnumType.STRING)
-    var state: ProductState = ProductState.NEW
+    var state: ProductState? = null
 
     @Column(name = "date_sold", nullable = false)
-    var sold: Long? = 0L
+    var sold: Long? = null
 
     @Column(name = "image", nullable = false)
     var image: String? = null
 
-    @Type(type = "text")
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = true)
     var description: String? = null
 
     @ManyToOne(optional = false, cascade = [CascadeType.ALL])
     @JoinColumn(name = "product_type_id", nullable = false)
     @JsonManagedReference
-    var productType: ProductTypeEntity = ProductTypeEntity()
+    var productType: ProductTypeEntity? = null
 
     @ManyToOne(optional = true, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = true)
     var client: ClientEntity? = null
 
     @Column(name = "enabled", nullable = false)
-    var enabled: Boolean? = true
+    var enabled: Boolean? = null
 
     constructor()
     constructor(
@@ -65,11 +63,11 @@ class ProductEntity{
         created: Long?,
         price: Int?,
         oldPrice: Int?,
-        state: ProductState,
+        state: ProductState?,
         sold: Long?,
         image: String?,
         description: String?,
-        productType: ProductTypeEntity,
+        productType: ProductTypeEntity?,
         client: ClientEntity?,
         enabled: Boolean?
     ) {
@@ -87,38 +85,43 @@ class ProductEntity{
         this.enabled = enabled
     }
 
-
-//    @PrePersist
-//    fun onCreate() {
-//        created = Date().time
-//    }
+    @PrePersist
+    fun onCreate() {
+        created = Date().time
+        oldPrice = 0
+    }
 
     @PreUpdate
     fun onUpdate() {
+
         if (state == ProductState.SOLD) {
-            sold = Date().time
-            oldPrice = 0
+            if (client == null && sold == 0L) {
+                sold = Date().time
+                state = ProductState.SOLD
+                oldPrice = 0
+            } else {
+                sold = Date().time
+            }
         } else {
-            sold = 0L
+            if (client == null) {
+                sold = 0
+            }
+
+            if (client != null) {
+                if (sold == 0L) {
+                    sold = Date().time
+                    state = ProductState.SOLD
+                    oldPrice = 0
+                } else {
+                    sold = 0
+                    client = null
+                    oldPrice = 0
+                }
+            }
         }
 
         if (oldPrice != 0) {
             state = ProductState.SALE
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
-        other as ProductEntity
-
-        return id == other.id
-    }
-
-    override fun hashCode(): Int = javaClass.hashCode()
-
-    @Override
-    override fun toString(): String {
-        return this::class.simpleName + "(id = $id, name = $name )"
     }
 }

@@ -1,13 +1,13 @@
 package ru.shvets.springshop.controller
 
-import mu.KotlinLogging
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import ru.shvets.springshop.entity.ProductEntity
+import ru.shvets.springshop.dto.ProductDto
 import ru.shvets.springshop.entity.ProductTypeEntity
+import ru.shvets.springshop.service.ClientService
 import ru.shvets.springshop.service.ProductService
 import ru.shvets.springshop.service.ProductTypeService
 import java.util.*
@@ -23,28 +23,25 @@ import java.util.*
 class ProductController(
     private val productTypeService: ProductTypeService,
     private val productService: ProductService,
+    private val clientService: ClientService
 ) {
-    private val logger = KotlinLogging.logger {}
-
     @GetMapping(*["", "/products"])
     fun showProductsList(model: Model): String {
         model["products"] = productService.getAll()
         return "/products/productsList"
     }
 
-    @PostMapping("/products/add")
+    @PostMapping("/products/update")
     fun addProduct(
-        @ModelAttribute product: ProductEntity,
+        @ModelAttribute product: ProductDto,
         @RequestParam(name = "file", required = false) file: MultipartFile
     ): String {
         if (!file.isEmpty) {
             if (product.id != 0L && product.image != file.originalFilename) {
-                println("Разные файлы")
                 product.id?.let { productService.deleteFileByProductId(it) }
             }
             product.image = productService.transferFile(file)
         }
-
         productService.save(product)
         return "redirect:/admin/products"
     }
@@ -68,10 +65,13 @@ class ProductController(
     @GetMapping("/products/edit/{id}")
     fun editProduct(@PathVariable("id") id: Long, model: Model): String {
         model["types"] = productTypeService.getAll()
-        model["product"] = productService.getById(id)
+        model["product"] = productService.getProductById(id)
+        model["clients"] = clientService.getAllClients()
         model["flagEdit"] = true
         return "/products/productForm"
     }
+
+    //Types
 
     @GetMapping("/types")
     fun showProductTypesList(model: Model): String {

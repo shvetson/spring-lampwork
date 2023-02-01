@@ -1,16 +1,14 @@
 package ru.shvets.springshop.service.impl
 
 import mu.KotlinLogging
-import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
-import ru.shvets.springshop.dto.AddressDto
 import ru.shvets.springshop.dto.ClientDto
-import ru.shvets.springshop.dto.ClientDto.Companion.toDto
-import ru.shvets.springshop.entity.AddressEntity
-import ru.shvets.springshop.entity.ClientEntity
-import ru.shvets.springshop.repository.AddressRepository
+import ru.shvets.springshop.mapper.ClientMapper
+import ru.shvets.springshop.mapper.ClientMapper.Companion.toDto
+import ru.shvets.springshop.mapper.ClientMapper.Companion.toEntity
+import ru.shvets.springshop.mapper.ProductMapper.Companion.toEntity
 import ru.shvets.springshop.repository.ClientRepository
 import ru.shvets.springshop.service.ClientService
 
@@ -22,15 +20,19 @@ import ru.shvets.springshop.service.ClientService
 
 @Service
 class ClientServiceImpl(
-    private val clientRepository: ClientRepository,
-    private val addressRepository: AddressRepository
+    private val clientRepository: ClientRepository
 ) : ClientService {
+
     private val logger = KotlinLogging.logger {}
+    private val clientMapper = ClientMapper()
 
     override fun getAllClients(): List<ClientDto> {
-        return clientRepository.findAll(Sort.by(Sort.Direction.ASC, "firstName")).map {
+        return clientRepository.findAll().map {
             it.toDto()
         }
+//        return clientRepository.findAll(Sort.by(Sort.Direction.ASC, "firstName")).map {
+//            it.toDto()
+//        }
     }
 
     override fun getClientById(id: Long): ClientDto {
@@ -41,8 +43,8 @@ class ClientServiceImpl(
         return client.toDto()
     }
 
-    override fun saveClient(client: ClientDto) {
-        clientRepository.save(client.toEntity())
+    override fun saveClient(dto: ClientDto) {
+        clientRepository.save(dto.toEntity())
         logger.info("Данные о клиенте добавлены / обновлены.")
     }
 

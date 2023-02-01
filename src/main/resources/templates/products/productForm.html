@@ -22,7 +22,7 @@
     </section>
 
     <section class="form-enter row">
-        <form th:action="@{/admin/products/add}" enctype="multipart/form-data" th:object="${product}" th:method="POST">
+        <form th:action="@{/admin/products/update}" enctype="multipart/form-data" th:object="${product}" th:method="POST">
             <div class="form-group row">
 
                 <div class="col-6">
@@ -86,6 +86,20 @@
                                 </option>
                             </select>
                         </div>
+                    </div>
+
+                    <div class="row mb-3" th:if="${flagEdit}">
+                        <label for="clientSelect" class="col-3 col-form-label">Покупатель</label>
+                        <div class="col-9">
+                            <select class="form-select" id="clientSelect" th:object="${product.client}" th:field="*{id}">
+                                <option selected value="">Выберите ...</option>
+                                <option th:each="client : ${clients}"
+                                        th:value="${client.id}"
+                                        th:utext="${client.firstName} + ' ' + ${client.lastName}">
+                                </option>
+                            </select>
+                        </div>
+
                     </div>
 
                     <!--                Добавление-->
